@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31829.152
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RijndaelAlgorithm", "RijndaelAlgorithm\RijndaelAlgorithm.csproj", "{7B7432CB-9A42-4E6E-94CE-F577035FB0CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RijndaelAlgorithm", "RijndaelAlgorithm\RijndaelAlgorithm.csproj", "{7B7432CB-9A42-4E6E-94CE-F577035FB0CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SigncryptionScheme", "SigncryptionSchemeProposed\SigncryptionScheme.csproj", "{269BCA23-ADC1-4A4D-B198-06BE3F6A4608}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7B7432CB-9A42-4E6E-94CE-F577035FB0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B7432CB-9A42-4E6E-94CE-F577035FB0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B7432CB-9A42-4E6E-94CE-F577035FB0CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269BCA23-ADC1-4A4D-B198-06BE3F6A4608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269BCA23-ADC1-4A4D-B198-06BE3F6A4608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269BCA23-ADC1-4A4D-B198-06BE3F6A4608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269BCA23-ADC1-4A4D-B198-06BE3F6A4608}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
