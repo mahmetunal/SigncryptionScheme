@@ -1,33 +1,46 @@
 ﻿using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Numerics;
 
 namespace RijndaelAlgorithm
 {
-    class AesExample
+    public class AesExample
     {
         public static void Main()
         {
-            string original = "Here is some data to encrypt!";
+            //string original = "Here is some data to encrypt!";
+            string original = System.IO.File.ReadAllText("../../../../Datasets/dataset32768.txt");
 
             // Create a new instance of the Aes
             // class.  This generates a new key and initialization
             // vector (IV).
             using Aes myAes = Aes.Create();
-            Console.WriteLine("Key:   {0}  \nand size: {1}", System.Text.Encoding.Default.GetString(myAes.Key), myAes.KeySize);
-            Console.WriteLine("IV:   {0}  \nand size: {1}", System.Text.Encoding.Default.GetString(myAes.IV), myAes.IV.Length);
+            using Aes secondAes = Aes.Create();
+
 
             // Encrypt the string to an array of bytes.
             byte[] encrypted = EncryptStringToBytes_Aes(original, myAes.Key, myAes.IV);
+            byte[] hashed = HashStringToBytes_SHA1(original);
+            Console.WriteLine("Key size {0}", myAes.KeySize);
 
             // Decrypt the bytes to a string.
             string roundtrip = DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
+            byte[] hashedRoundTrip = HashStringToBytes_SHA1(roundtrip);
 
             //Display the original data and the decrypted data.
-            Console.WriteLine("Original:   {0}", original);
-            Console.WriteLine("Encrypted:   {0}", System.Text.Encoding.Default.GetString(encrypted));
-            Console.WriteLine("Round Trip: {0}", roundtrip);
+            //Console.WriteLine("Original:   {0}", original);
+            //Console.WriteLine("Encrypted:   {0}", System.Text.Encoding.Default.GetString(encrypted));
+            //Console.WriteLine("Round Trip: {0}", roundtrip);
+            Console.WriteLine("Are they equal for encryption: {0}", roundtrip == original);
+            Console.WriteLine("Are they equal for hashing: {0}", System.Text.Encoding.Default.GetString(hashed) == System.Text.Encoding.Default.GetString(hashedRoundTrip));
+
+            //Making comparison in byte array level
+            Console.WriteLine("Are they equal for hashing: {0}", hashed.AsSpan<byte>().SequenceEqual(hashedRoundTrip));
+            Console.WriteLine("Hashed version: {0}", System.Text.Encoding.Default.GetString(hashed));
         }
+
+        #region EncryptionDecryptionRijndael
         static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
         {
             // Check arguments.
@@ -50,9 +63,9 @@ namespace RijndaelAlgorithm
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for encryption.
-                using MemoryStream msEncrypt = new();
-                using CryptoStream csEncrypt = new(msEncrypt, encryptor, CryptoStreamMode.Write);
-                using (StreamWriter swEncrypt = new(csEncrypt))
+                using MemoryStream msEncrypt = new MemoryStream();
+                using CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write);
+                using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                 {
                     //Write all data to the stream.
                     swEncrypt.Write(plainText);
@@ -89,9 +102,9 @@ namespace RijndaelAlgorithm
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for decryption.
-                using MemoryStream msDecrypt = new(cipherText);
-                using CryptoStream csDecrypt = new(msDecrypt, decryptor, CryptoStreamMode.Read);
-                using StreamReader srDecrypt = new(csDecrypt);
+                using MemoryStream msDecrypt = new MemoryStream(cipherText);
+                using CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read);
+                using StreamReader srDecrypt = new StreamReader(csDecrypt);
 
                 // Read the decrypted bytes from the decrypting stream
                 // and place them in a string.
@@ -100,5 +113,47 @@ namespace RijndaelAlgorithm
 
             return plaintext;
         }
+
+        #endregion EncryptionDecryptionRijndael
+
+        #region SHA1ComputeHash
+
+        static byte[] HashStringToBytes_SHA1(string plainText)
+        {
+            // Check argument.
+            if (plainText == null || plainText.Length <= 0)
+                throw new ArgumentNullException(nameof(plainText));
+            
+            byte[] hashed;
+            byte[] sourceBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+
+            // Create a SHA1 object
+            using SHA1 sha1Hash = SHA1.Create();
+            hashed = sha1Hash.ComputeHash(sourceBytes); 
+            
+
+            // Return the hashed bytes from the memory stream.
+            return hashed;
+        }
+
+        static byte[] HashBigIntegerToBytes_SHA1(BigInteger _input)
+        {
+            // Check argument.
+            if (_input.IsZero)
+                throw new ArgumentNullException(nameof(_input));
+
+            byte[] hashed;
+            byte[] sourceBytes = _input.ToByteArray();
+
+            // Create a SHA1 object
+            using SHA1 sha1Hash = SHA1.Create();
+            hashed = sha1Hash.ComputeHash(sourceBytes);
+
+            // Return the hashed bytes from the memory stream.
+            return hashed;
+        }
+
+        #endregion SHA1ComputeHash
     }
+
 }
