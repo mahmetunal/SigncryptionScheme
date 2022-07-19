@@ -3,6 +3,9 @@ using System.Numerics;
 using System.Collections.Generic;
 using SigncryptionScheme;
 using SigncryptionScheme.Signcryption;
+using SigncryptionScheme.Computations;
+using SigncryptionScheme.Signcryption.Participants;
+using SigncryptionScheme.Signcryption.Participants.Sender;
 
 namespace ProposedSigncryption
 {
@@ -10,25 +13,47 @@ namespace ProposedSigncryption
     {
         public static void Main(string[] args)
         {
-            string message = "Hello World";
+            /*List<BigInteger> list = new List<BigInteger>();
+            for(int i = 1; i < 40836; i++)
+            {
+                list.Add(new BigInteger(i));
+            }
+
+            list = list.FindAll(x => BigInteger.ModPow(x, new BigInteger(82), new BigInteger(41417)) == 1);
+
+            foreach(BigInteger x in list)
+            {
+                Console.WriteLine("for {0} result: {1}", x, BigInteger.ModPow(x,new BigInteger(82),new BigInteger(41417)));
+            }
+
+
+            BigInteger primeNumber = new BigInteger(7);
+            BigIntegerPrimeTest BIPt = new BigIntegerPrimeTest();
+            BigInteger primitiveRoot = BIPt.CalculatePrimitiveRootForPrimeModulo(primeNumber);
+
+            Console.WriteLine("Primitive root of prime: {0}", primitiveRoot);*/
+
+            string message = "Hello World I am the king of encryption";
+            string original = System.IO.File.ReadAllText("../../../../Datasets/dataset32768.txt");
+            message = original;
             GlobalParameters gp = GlobalParameters.Instance();
 
-            Console.WriteLine("RandomNumberN", gp.RandomNumberN);
+            Console.WriteLine("RandomNumberN: {0}", gp.RandomNumberN);
 
-            Sender Alice = new Sender();
+            
             Receiver Bob = new Receiver();
+            Sender Alice = new Sender();
 
-            Signcryption SigncryptionAlice = new Signcryption(Alice, Bob.GetPublicKey());
-            Dictionary<string, byte[]> signcryptValues = SigncryptionAlice.SigncryptTheMessage(message);
 
-            Console.WriteLine("Bob's private key: {0}", Bob.GetPublicKey());
-            Console.WriteLine("Alice's private key: {0}", Alice.SecretKey);
+            Dictionary<string, byte[]> signcryptValues = Alice.MessageSigncryption(message, Bob.GetPublicKey());
+
+            Console.WriteLine("Bob's public key: {0}", Bob.GetPublicKey());
+
             Console.WriteLine("A1 value: {0}", new BigInteger(signcryptValues[ConstantValuesSigncryption.A1]));
             Console.WriteLine("A2 value: {0}", new BigInteger(signcryptValues[ConstantValuesSigncryption.A2]));
 
-            Unsigncryption UnsigncryptionBob = new Unsigncryption(Bob);
             
-            Console.WriteLine("Is message tampered: {0}", UnsigncryptionBob.UnsigncryptTheMessage(signcryptValues));
+            Console.WriteLine("Is message the same: {0}", Bob.MessageUnsigncryption(signcryptValues));
 
 
             #region SDSS11

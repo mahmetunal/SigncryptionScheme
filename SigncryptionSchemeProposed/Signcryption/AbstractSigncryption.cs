@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace SigncryptionScheme.Signcryption
 {
-    abstract class AbstractSigncryption
+    public abstract class AbstractSigncryption
     {
         public byte[] ComputeKeyK2(BigInteger _keyKey1)
         {

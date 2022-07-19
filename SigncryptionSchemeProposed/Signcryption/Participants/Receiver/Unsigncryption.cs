@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SigncryptionScheme.Signcryption.Participants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -6,17 +7,16 @@ using System.Text;
 
 namespace SigncryptionScheme.Signcryption
 {
-    class Unsigncryption : AbstractSigncryption
+    public class Unsigncryption : AbstractSigncryption
     {
         GlobalParameters gb = GlobalParameters.Instance();
-        private Receiver Bob;
 
-        public Unsigncryption(Receiver _Bob)
+        public Unsigncryption()
         {
-            this.Bob = _Bob;
+
         }
 
-        public bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues)
+        public bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver)
         {
             byte[] valueA1;
             byte[] valueA2;
@@ -32,19 +32,17 @@ namespace SigncryptionScheme.Signcryption
             valueC = _signcryptValues[ConstantValuesSigncryption.C];
             valueR = _signcryptValues[ConstantValuesSigncryption.R];
 
-            ObtainedKey1 = this.ObtainKeyK1(valueA1, valueA2);
+            ObtainedKey1 = this.ObtainKeyK1(valueA1, valueA2, _PrivateKeyOfReceiver);
             Key2 = this.ComputeKeyK2(ObtainedKey1);
             Array.Resize(ref Key2, 32);
 
-            obtainedMessage = this.DecryptMessageWithKey2(valueC, Key2);
-            Console.WriteLine("Obtained message: {0}", obtainedMessage);
-
+            obtainedMessage = this.DecryptMessageWithKey2(valueC, Key2);;
             valuePrimeR = this.SignMessageWithKey2(obtainedMessage, Key2);
 
             return this.VerifyTheMessage(valueR, valuePrimeR);
         }
 
-        private BigInteger ObtainKeyK1(byte [] _ValueA1, byte[] _ValueA2)
+        private BigInteger ObtainKeyK1(byte [] _ValueA1, byte[] _ValueA2, BigInteger _PrivateKey)
         {
             BigInteger computedValueKeyK1;
             BigInteger valueA1;
@@ -53,8 +51,13 @@ namespace SigncryptionScheme.Signcryption
             valueA1 = new BigInteger(_ValueA1);
             valueA2 = new BigInteger(_ValueA2);
 
-            computedValueKeyK1 = BigInteger.Divide(valueA1 % gb.RandomNumberN,
-                BigInteger.ModPow(valueA1, this.Bob.GetPrivateKey(), gb.RandomNumberN));
+            BigInteger tempValue1 = BigInteger.Pow(valueA1, (int)_PrivateKey) % gb.RandomNumberN;
+
+            List<BigInteger> tempList = gb.ListContainingAllNValues.FindAll(x => BigInteger.Multiply(x, tempValue1) % gb.RandomNumberN == 1);
+
+            BigInteger temp = BigInteger.ModPow(valueA1, _PrivateKey, gb.RandomNumberN);
+
+            computedValueKeyK1 = BigInteger.Multiply(valueA2, tempList[0]) % gb.RandomNumberN; 
 
             return computedValueKeyK1;
         }

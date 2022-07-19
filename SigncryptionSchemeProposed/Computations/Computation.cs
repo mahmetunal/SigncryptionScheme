@@ -38,6 +38,7 @@ namespace SigncryptionScheme
                 {
                     //Write all data to the stream.
                     swEncrypt.Write(plainText);
+                    
                 }
                 encrypted = msEncrypt.ToArray();
             }
@@ -79,6 +80,7 @@ namespace SigncryptionScheme
                 // Read the decrypted bytes from the decrypting stream
                 // and place them in a string.
                 plaintext = srDecrypt.ReadToEnd();
+                
             }
 
             return plaintext;
@@ -150,6 +152,7 @@ namespace SigncryptionScheme
         {
             // Check argument.
             if (_input.IsZero)
+                //_input = BigInteger.One;
                 throw new ArgumentNullException(nameof(_input));
 
             byte[] hashed;
