@@ -43,7 +43,7 @@ namespace SigncryptionScheme.Signcryption
         {
             this.GlobalParametersInit();
         }
-        protected static GlobalParameters Instance()
+        public static GlobalParameters Instance()
         {
             if (instance == null)
             {
@@ -64,7 +64,7 @@ namespace SigncryptionScheme.Signcryption
 
         }
 
-        protected void GenerateNewParameters()
+        public void GenerateNewParameters()
         {
             this.GlobalParametersInit();   
         }

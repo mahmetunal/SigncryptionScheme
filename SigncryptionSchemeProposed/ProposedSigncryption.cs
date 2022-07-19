@@ -6,6 +6,7 @@ using SigncryptionScheme.Signcryption;
 using SigncryptionScheme.Computations;
 using SigncryptionScheme.Signcryption.Participants;
 using SigncryptionScheme.Signcryption.Participants.Sender;
+using SigncryptionScheme.Signcryption.Participants.Receiver;
 
 namespace ProposedSigncryption
 {
@@ -13,51 +14,31 @@ namespace ProposedSigncryption
     {
         public static void Main(string[] args)
         {
-            /*List<BigInteger> list = new List<BigInteger>();
-            for(int i = 1; i < 40836; i++)
-            {
-                list.Add(new BigInteger(i));
-            }
-
-            list = list.FindAll(x => BigInteger.ModPow(x, new BigInteger(82), new BigInteger(41417)) == 1);
-
-            foreach(BigInteger x in list)
-            {
-                Console.WriteLine("for {0} result: {1}", x, BigInteger.ModPow(x,new BigInteger(82),new BigInteger(41417)));
-            }
-
-
-            BigInteger primeNumber = new BigInteger(7);
-            BigIntegerPrimeTest BIPt = new BigIntegerPrimeTest();
-            BigInteger primitiveRoot = BIPt.CalculatePrimitiveRootForPrimeModulo(primeNumber);
-
-            Console.WriteLine("Primitive root of prime: {0}", primitiveRoot);*/
-
             string message = "Hello World I am the king of encryption";
             string original = System.IO.File.ReadAllText("../../../../Datasets/dataset32768.txt");
+            original = System.IO.File.ReadAllText("../../../../Datasets/dataset4911.txt");
+            //original = System.IO.File.ReadAllText("../../../../Datasets/dataset106655.txt");
             message = original;
-            GlobalParameters gp = GlobalParameters.Instance();
+            long timeDifference;
 
-            Console.WriteLine("RandomNumberN: {0}", gp.RandomNumberN);
 
-            
+
+
+
+            timeDifference = Computation.GetTimeStamp();
             Receiver Bob = new Receiver();
             Sender Alice = new Sender();
-
-
+            
             Dictionary<string, byte[]> signcryptValues = Alice.MessageSigncryption(message, Bob.GetPublicKey());
-
-            Console.WriteLine("Bob's public key: {0}", Bob.GetPublicKey());
-
-            Console.WriteLine("A1 value: {0}", new BigInteger(signcryptValues[ConstantValuesSigncryption.A1]));
-            Console.WriteLine("A2 value: {0}", new BigInteger(signcryptValues[ConstantValuesSigncryption.A2]));
 
             
             Console.WriteLine("Is message the same: {0}", Bob.MessageUnsigncryption(signcryptValues));
+            timeDifference = Computation.GetTimeStamp() - timeDifference;
 
+            Console.WriteLine("Time difference for Unsigncryption: {0}", timeDifference);
 
             #region SDSS11
-            #if false
+#if false
             List<BigInteger> primeFactors;
             Random rnd = new Random();
             RandomBigIntegerGenerator RBI = new RandomBigIntegerGenerator();

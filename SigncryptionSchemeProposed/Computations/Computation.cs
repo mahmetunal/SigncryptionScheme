@@ -24,7 +24,7 @@ namespace SigncryptionScheme
             // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
-                aesAlg.Padding = PaddingMode.Zeros;
+                aesAlg.Padding = PaddingMode.PKCS7;
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -65,7 +65,7 @@ namespace SigncryptionScheme
             // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
-                aesAlg.Padding = PaddingMode.Zeros;
+                aesAlg.Padding = PaddingMode.PKCS7;
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -104,7 +104,7 @@ namespace SigncryptionScheme
             // with the specified key and IV.
             using (Aes aesAlg = Aes.Create())
             {
-                aesAlg.Padding = PaddingMode.Zeros;
+                aesAlg.Padding = PaddingMode.PKCS7;
                 aesAlg.Key = Key;
                 aesAlg.IV = IV;
 
@@ -227,5 +227,10 @@ namespace SigncryptionScheme
             return hashed;
         }
         #endregion SHA1ComputeHash
+
+        public static long GetTimeStamp()
+        {
+            return DateTime.Now.Ticks;
+        }
     }
 }
