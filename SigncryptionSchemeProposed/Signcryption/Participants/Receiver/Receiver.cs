@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Numerics;
 
-namespace SigncryptionScheme.Signcryption.Participants
+namespace SigncryptionScheme.Signcryption.Participants.Receiver
 {
     public class Receiver : Unsigncryption
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace SigncryptionScheme.Signcryption
+namespace SigncryptionScheme.Signcryption.Participants.Receiver
 {
     public class Unsigncryption : AbstractSigncryption
     {
@@ -16,7 +16,7 @@ namespace SigncryptionScheme.Signcryption
 
         }
 
-        public bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver)
+        protected bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver)
         {
             byte[] valueA1;
             byte[] valueA2;

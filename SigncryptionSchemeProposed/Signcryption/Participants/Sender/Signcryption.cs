@@ -15,7 +15,7 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
 
         }
 
-        public Dictionary<string, byte[]> SigncryptTheMessage(string message, BigInteger _PublicKeyReceiver, BigInteger _Beta, BigInteger _KeyK1)
+        protected Dictionary<string, byte[]> SigncryptTheMessage(string message, BigInteger _PublicKeyReceiver, BigInteger _Beta, BigInteger _KeyK1)
         {
             Dictionary<string, byte[]> SignCryptValues = new Dictionary<string, byte[]>();
             
@@ -29,9 +29,7 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
             byte[] ComputedValueC;
 
             ComputedValueA1 = ComputeA1(_Beta);
-            ComputedValueA2 = ComputeA2(_Beta, _KeyK1, _PublicKeyReceiver);
-            Console.WriteLine("Actual A1: {0}, A2: {1}", ComputedValueA1, ComputedValueA2);
-            
+            ComputedValueA2 = ComputeA2(_Beta, _KeyK1, _PublicKeyReceiver);          
             ComputedValueA1Final = ComputedValueA1.ToByteArray();
             ComputedValueA2Final = ComputedValueA2.ToByteArray();
 

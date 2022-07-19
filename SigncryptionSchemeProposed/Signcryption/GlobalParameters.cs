@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SigncryptionScheme
+namespace SigncryptionScheme.Signcryption
 {
     public static class ConstantValuesSigncryption
     {
@@ -43,7 +43,7 @@ namespace SigncryptionScheme
         {
             this.GlobalParametersInit();
         }
-        public static GlobalParameters Instance()
+        protected static GlobalParameters Instance()
         {
             if (instance == null)
             {
@@ -64,7 +64,7 @@ namespace SigncryptionScheme
 
         }
 
-        public void GenerateNewParameters()
+        protected void GenerateNewParameters()
         {
             this.GlobalParametersInit();   
         }
