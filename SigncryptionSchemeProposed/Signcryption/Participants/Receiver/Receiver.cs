@@ -11,9 +11,16 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
             kg = new KeyGeneration();
         }
 
-        public bool MessageUnsigncryption(Dictionary<string, byte[]> _signcryptValues)
+        public bool MessageUnsigncryption(Dictionary<string, byte[]> _signcryptValues, out string _message_)
         {
-            return this.UnsigncryptTheMessage(_signcryptValues, GetPrivateKey());
+            bool isMessageVerified = this.UnsigncryptTheMessage(_signcryptValues, GetPrivateKey(), out string _message);
+
+            if (isMessageVerified)
+                _message_ = _message;
+            else
+                _message_ = "Message could not verified.";
+
+            return isMessageVerified;
         }
 
         public BigInteger GetPublicKey()

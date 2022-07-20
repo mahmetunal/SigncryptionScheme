@@ -16,7 +16,7 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
 
         }
 
-        protected bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver)
+        protected bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver, out string obtainedMessageOut)
         {
             byte[] valueA1;
             byte[] valueA2;
@@ -36,7 +36,8 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
             Key2 = this.ComputeKeyK2(ObtainedKey1);
             Array.Resize(ref Key2, 32);
 
-            obtainedMessage = this.DecryptMessageWithKey2(valueC, Key2);;
+            obtainedMessage = this.DecryptMessageWithKey2(valueC, Key2);
+            obtainedMessageOut = obtainedMessage;
             valuePrimeR = this.SignMessageWithKey2(obtainedMessage, Key2);
 
             return this.VerifyTheMessage(valueR, valuePrimeR);
@@ -51,11 +52,10 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
             valueA1 = new BigInteger(_ValueA1);
             valueA2 = new BigInteger(_ValueA2);
 
-            BigInteger tempValue1 = BigInteger.Pow(valueA1, (int)_PrivateKey) % gb.RandomNumberN;
+            //BigInteger tempValue1 = BigInteger.Pow(valueA1, (int)_PrivateKey) % gb.RandomNumberN;
+            BigInteger tempValue1 = BigInteger.ModPow(valueA1, _PrivateKey, gb.RandomNumberN);
 
             List<BigInteger> tempList = gb.ListContainingAllNValues.FindAll(x => BigInteger.Multiply(x, tempValue1) % gb.RandomNumberN == 1);
-
-            BigInteger temp = BigInteger.ModPow(valueA1, _PrivateKey, gb.RandomNumberN);
 
             computedValueKeyK1 = BigInteger.Multiply(valueA2, tempList[0]) % gb.RandomNumberN; 
 
