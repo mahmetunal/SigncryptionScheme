@@ -5,18 +5,18 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace SigncryptionScheme.SDSS1.Participants.Sender
+namespace SigncryptionScheme.SDSS2.Participants.Sender
 {
-    public class SigncryptionSDSS1 : AbstractSigncryptionSDSS1
+    public class SigncryptionSDSS2 : AbstractSigncryptionSDSS2
     {
-        private readonly GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
+        private readonly GlobalParametersSDSS2 gb = GlobalParametersSDSS2.Instance();
 
-        public SigncryptionSDSS1()
+        public SigncryptionSDSS2()
         {
 
         }
 
-        protected Dictionary<string, byte[]> SigncryptTheMessage(string message, BigInteger _PublicKeyReceiver, 
+        protected Dictionary<string, byte[]> SigncryptTheMessage(string message, BigInteger _PublicKeyReceiver,
             BigInteger _RandomNumberX, BigInteger _SenderSecretKey, out bool _isErrorOccured)
         {
             _isErrorOccured = false;
@@ -28,6 +28,7 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
             byte[] ComputedValueC;
 
             byte[] hashedK1, hashedK2, masterHash;
+
             try
             {
                 masterHash = ComputeMasterKey(_RandomNumberX, _PublicKeyReceiver);
@@ -50,15 +51,15 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
                 /*
                  * Adding computed values to the list for sending it to the receiver.
                  */
-                SignCryptValues.Add(ConstantValuesSigncryptionSDSS1.S, ComputedValueSbyte);
-                SignCryptValues.Add(ConstantValuesSigncryptionSDSS1.C, ComputedValueC);
-                SignCryptValues.Add(ConstantValuesSigncryptionSDSS1.R, ComputedValueR);
+                SignCryptValues.Add(ConstantValuesSigncryptionSDSS2.S, ComputedValueSbyte);
+                SignCryptValues.Add(ConstantValuesSigncryptionSDSS2.C, ComputedValueC);
+                SignCryptValues.Add(ConstantValuesSigncryptionSDSS2.R, ComputedValueR);
             }
             catch
             {
                 _isErrorOccured = true;
             }
-
+           
             return SignCryptValues;
         }
 
@@ -70,7 +71,7 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
 
         private BigInteger ComputeS(BigInteger _RandomValueX, BigInteger _ValueR, BigInteger _SenderSecretKey)
         {
-            List<BigInteger> tempList = gb.ListContainingAllQValues.FindAll(x => BigInteger.Multiply(x, (_ValueR + _SenderSecretKey)) % gb.RandomNumberQ == 1);
+            List<BigInteger> tempList = gb.ListContainingAllQValues.FindAll(x => BigInteger.Multiply(x, 1 + (_ValueR * _SenderSecretKey)) % gb.RandomNumberQ == 1);
             BigInteger tempValue0 = BigInteger.Multiply(_RandomValueX, tempList[0]) % gb.RandomNumberQ;
             return tempValue0;
         }

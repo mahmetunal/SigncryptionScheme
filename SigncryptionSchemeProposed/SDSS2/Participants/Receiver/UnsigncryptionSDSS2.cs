@@ -5,13 +5,13 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace SigncryptionScheme.SDSS1.Participants.Receiver
+namespace SigncryptionScheme.SDSS2.Participants.Receiver
 {
-    public class UnsigncryptionSDSS1 : AbstractSigncryptionSDSS1
+    public class UnsigncryptionSDSS2 : AbstractSigncryptionSDSS2
     {
-        GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
+        GlobalParametersSDSS2 gb = GlobalParametersSDSS2.Instance();
 
-        public UnsigncryptionSDSS1()
+        public UnsigncryptionSDSS2()
         {
 
         }
@@ -27,9 +27,9 @@ namespace SigncryptionScheme.SDSS1.Participants.Receiver
             string obtainedMessage;
             byte[] hashedK1, hashedK2, masterHash;
 
-            valueS = _signcryptValues[ConstantValuesSigncryptionSDSS1.S];
-            valueC = _signcryptValues[ConstantValuesSigncryptionSDSS1.C];
-            valueR = _signcryptValues[ConstantValuesSigncryptionSDSS1.R];
+            valueS = _signcryptValues[ConstantValuesSigncryptionSDSS2.S];
+            valueC = _signcryptValues[ConstantValuesSigncryptionSDSS2.C];
+            valueR = _signcryptValues[ConstantValuesSigncryptionSDSS2.R];
 
 
             ObtainedMasterKey = this.ObtainMasterKey(valueR, valueS, _PrivateKeyOfReceiver, _PublicKeyOfSender);
@@ -64,9 +64,9 @@ namespace SigncryptionScheme.SDSS1.Participants.Receiver
 
             BigInteger tempValue0 = BigInteger.Multiply(valueS, _PrivateKey);
 
-            BigInteger tempValue1 = BigInteger.ModPow(gb.RandomNumberG, BigInteger.Multiply(tempValue0, valueR), gb.RandomNumberP);
+            BigInteger tempValue1 = BigInteger.ModPow(_PublicKeyOfSender, BigInteger.Multiply(tempValue0, valueR), gb.RandomNumberP);
 
-            BigInteger tempValue2 = BigInteger.ModPow(_PublicKeyOfSender, tempValue0, gb.RandomNumberP);
+            BigInteger tempValue2 = BigInteger.ModPow(gb.RandomNumberG, tempValue0, gb.RandomNumberP);
 
             return BigInteger.Multiply(tempValue1, tempValue2) % gb.RandomNumberP;
         }

@@ -5,15 +5,15 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SigncryptionScheme.SDSS1
+namespace SigncryptionScheme.SDSS2
 {
-    public static class ConstantValuesSigncryptionSDSS1
+    public static class ConstantValuesSigncryptionSDSS2
     {
         public static string S = "S";
         public static string C = "C";
         public static string R = "R";
     }
-    public class GlobalParametersSDSS1
+    public class GlobalParametersSDSS2
     {
         /**
          * Singleton design pattern is being used
@@ -22,7 +22,7 @@ namespace SigncryptionScheme.SDSS1
          *
          **/
 
-        static GlobalParametersSDSS1 instance;
+        static GlobalParametersSDSS2 instance;
 
         public BigInteger RandomNumberP;
         public BigInteger RandomNumberQ;
@@ -33,15 +33,15 @@ namespace SigncryptionScheme.SDSS1
         public List<BigInteger> RelativePrimesOfQ;
         public List<BigInteger> RelativePrimesOfP;
         
-        protected GlobalParametersSDSS1()
+        protected GlobalParametersSDSS2()
         {
             this.GlobalParametersInit();
         }
-        public static GlobalParametersSDSS1 Instance()
+        public static GlobalParametersSDSS2 Instance()
         {
             if (instance == null)
             {
-                instance = new GlobalParametersSDSS1();
+                instance = new GlobalParametersSDSS2();
             }
             return instance;
         }

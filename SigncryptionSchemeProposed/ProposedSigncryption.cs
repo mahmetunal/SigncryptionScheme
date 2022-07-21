@@ -9,6 +9,8 @@ using SigncryptionScheme.Signcryption.Participants.Sender;
 using SigncryptionScheme.Signcryption.Participants.Receiver;
 using SigncryptionScheme.SDSS1.Participants.Receiver;
 using SigncryptionScheme.SDSS1.Participants.Sender;
+using SigncryptionScheme.SDSS2.Participants.Receiver;
+using SigncryptionScheme.SDSS2.Participants.Sender;
 
 namespace ProposedSigncryption
 {
@@ -21,6 +23,7 @@ namespace ProposedSigncryption
             original = System.IO.File.ReadAllText("../../../../Datasets/dataset4911.txt");
             //original = System.IO.File.ReadAllText("../../../../Datasets/dataset106655.txt");
             message = original;
+
             long timeDifference;
             string _message;
 
@@ -34,20 +37,34 @@ namespace ProposedSigncryption
             Console.WriteLine("Is message the same: {0}", Bob.MessageUnsigncryption(signcryptValues, out _message));
             timeDifference = Computation.GetTimeStamp() - timeDifference;
             _message = "";
-            Console.WriteLine("Time difference for Unsigncryption: {0}", timeDifference);
+            Console.WriteLine("Time difference for Signcryption Proposed: {0}", timeDifference);
 
             timeDifference = Computation.GetTimeStamp();
+
             ReceiverSDSS1 BobSDSS1 = new ReceiverSDSS1();
             SenderSDSS1 AliceSDSS1 = new SenderSDSS1();
-            message = "Hello World I am the king of encryption";
+
             Dictionary<string, byte[]> signcryptValuesSDSS1 = AliceSDSS1.MessageSigncryption(message, BobSDSS1.GetPublicKey());
 
 
             Console.WriteLine("Is message the same: {0}", BobSDSS1.MessageUnsigncryption(signcryptValuesSDSS1, AliceSDSS1.GetPublicKey(), out _message));
             timeDifference = Computation.GetTimeStamp() - timeDifference;
 
-            Console.WriteLine("Time difference for Unsigncryption: {0}", timeDifference);
-        
+            Console.WriteLine("Time difference for SDSS1: {0}", timeDifference);
+
+            timeDifference = Computation.GetTimeStamp();
+
+            ReceiverSDSS2 BobSDSS2 = new ReceiverSDSS2();
+            SenderSDSS2 AliceSDSS2 = new SenderSDSS2();
+
+            Dictionary<string, byte[]> signcryptValuesSDSS2 = AliceSDSS2.MessageSigncryption(message, BobSDSS2.GetPublicKey());
+
+
+            Console.WriteLine("Is message the same: {0}", BobSDSS2.MessageUnsigncryption(signcryptValuesSDSS2, AliceSDSS2.GetPublicKey(), out _message));
+            timeDifference = Computation.GetTimeStamp() - timeDifference;
+
+            Console.WriteLine("Time difference for SDSS2: {0}", timeDifference);
+
 
         }
     }

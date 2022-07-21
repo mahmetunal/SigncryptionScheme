@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace SigncryptionScheme.SDSS1.Participants.Sender
+namespace SigncryptionScheme.SDSS2.Participants.Sender
 {
-    public class SenderSDSS1 : SigncryptionSDSS1
+    public class SenderSDSS2 : SigncryptionSDSS2
     {
-        GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
+        GlobalParametersSDSS2 gb = GlobalParametersSDSS2.Instance();
 
         private BigInteger RandomNumberX;
-        private KeyGenerationSDSS1 kg;
+        private KeyGenerationSDSS2 kg;
 
 
-        public SenderSDSS1()
+        public SenderSDSS2()
         {
-            kg = new KeyGenerationSDSS1();
+            kg = new KeyGenerationSDSS2();
             RandomNumberX = this.GenerateRandomNumberX();
         }
 
@@ -25,7 +25,7 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
 
             do
             {
-                if (isErrorOccured)
+                if(isErrorOccured)
                     RandomNumberX = this.GenerateRandomNumberX();
                 signcryptValues = this.SigncryptTheMessage(message, _PublicKeyReceiver, this.RandomNumberX, GetPrivateKey(), out isErrorOccured);
 

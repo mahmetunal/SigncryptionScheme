@@ -33,12 +33,6 @@ namespace SigncryptionScheme.Signcryption
         public List<BigInteger> ListContainingAllNValues;
         public List<BigInteger> RelativePrimesOfN;
         
-
-
-        public static BigInteger startPoint = new BigInteger(Math.Pow(2, 5));
-        public static BigInteger endPoint = new BigInteger(Math.Pow(2, 10));
-        public static BigInteger lowerLimitofQ = new BigInteger(10);
-        
         protected GlobalParameters()
         {
             this.GlobalParametersInit();
@@ -78,7 +72,7 @@ namespace SigncryptionScheme.Signcryption
 
                 while (!isPrimeFound)
                 {
-                    tempRandomNumberP = RBI.RandomBigInteger(startPoint, endPoint);
+                    tempRandomNumberP = RBI.RandomBigInteger(ConstantValeus.startPoint, ConstantValeus.endPoint);
                     BigIntegerPrimeTest BIPT = new BigIntegerPrimeTest();
                     isPrimeFound = BIPT.IsProbablePrime(tempRandomNumberP, 100);
                 }
@@ -113,7 +107,7 @@ namespace SigncryptionScheme.Signcryption
                     primeFactors = primeFactors.FindAll(
                         delegate (BigInteger bg)
                         {
-                            return BIPT.IsProbablePrime(bg, 100) && bg > lowerLimitofQ;
+                            return BIPT.IsProbablePrime(bg, 100) && bg > ConstantValeus.lowerLimitofQ;
                         }
                     );
 
