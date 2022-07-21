@@ -80,5 +80,79 @@ namespace SigncryptionScheme.Computations
 
             return true;
         }
+
+        public BigInteger FindPrimitiveRoots(BigInteger _primeNumber)
+        {
+
+            // Find value of Euler Totient function of n
+            // Since n is a prime number, the value of Euler
+            // Totient function is n-1 as there are n-1
+            // relatively prime numbers.
+            BigInteger phi = _primeNumber - 1;
+
+            // Find prime factors of phi and store in a List
+            List<BigInteger> source = Factors(phi);
+
+            // Check for every number from 2 to phi
+            for (BigInteger iterator = 2; iterator <= phi; iterator++)
+            {
+                // Iterate through all prime factors of phi.
+                // and check if we found a power with value 1
+                bool flag = false;
+                foreach(BigInteger bg in source)
+                {
+
+                    // Check if iterator^((phi)/primefactors) mod p
+                    // is 1 or not
+
+                    flag = Power(iterator, phi / bg, _primeNumber) == BigInteger.One;
+
+                    if (!flag)
+                        return iterator;
+                }
+
+            }
+
+            // If no primitive root found
+            return BigInteger.MinusOne;
+        }
+
+        public BigInteger Power(BigInteger x, BigInteger y, BigInteger p)
+        {
+            BigInteger res = BigInteger.One;     // Initialize result
+
+            x %= p; // Update x if it is more than or equal to p
+
+            while (y > 0)
+            {
+                // If y is odd, multiply x with result
+                if (y % 2 == 1)
+                {
+                    res = (res * x) % p;
+                }
+
+                // y must be even now
+                y >>= 1; // y = y/2
+                x = (x * x) % p;
+            }
+            return res;
+        }
+
+        public BigInteger CalculatePrimitiveRootForPrimeModulo(BigInteger _primeNumber)
+        {
+
+            BigInteger phi = _primeNumber - 1;
+
+            if (_primeNumber < 4)
+                return phi;
+
+            var factors = Factors(phi);
+
+            for (BigInteger ans = 2; ans <= _primeNumber; ans++)
+                if (factors.FindAll(factor => BigInteger.ModPow(ans, (phi / factor), _primeNumber) != 1).Count != 0)
+                    return ans;
+
+            throw new ArgumentException($"Primitive root for prime modulo must exist. Modulo {_primeNumber} is not prime");
+        }
     }
 }

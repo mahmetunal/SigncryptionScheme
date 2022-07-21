@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 
-namespace SigncryptionScheme
+namespace SigncryptionScheme.Signcryption
 {
     public abstract class KeyGenerationAbstract
     {

@@ -5,16 +5,15 @@ using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SigncryptionScheme.Signcryption
+namespace SigncryptionScheme.SDSS1
 {
-    public static class ConstantValuesSigncryption
+    public static class ConstantValuesSigncryptionSDSS1
     {
-        public static string A1 = "A1";
-        public static string A2 = "A2";
+        public static string S = "S";
         public static string C = "C";
         public static string R = "R";
     }
-    public class GlobalParameters
+    public class GlobalParametersSDSS1
     {
         /**
          * Singleton design pattern is being used
@@ -23,31 +22,30 @@ namespace SigncryptionScheme.Signcryption
          *
          **/
 
-        static GlobalParameters instance;
+        static GlobalParametersSDSS1 instance;
 
         public BigInteger RandomNumberP;
         public BigInteger RandomNumberQ;
         public BigInteger RandomNumberG;
-        public BigInteger RandomNumberN;
         public Aes RijndaelCryptoSystem;
-        public List<BigInteger> ListContainingAllNValues;
-        public List<BigInteger> RelativePrimesOfN;
-        
-
+        public List<BigInteger> ListContainingAllQValues;
+        public List<BigInteger> ListContainingAllPValues;
+        public List<BigInteger> RelativePrimesOfQ;
+        public List<BigInteger> RelativePrimesOfP;
 
         public static BigInteger startPoint = new BigInteger(Math.Pow(2, 5));
         public static BigInteger endPoint = new BigInteger(Math.Pow(2, 10));
         public static BigInteger lowerLimitofQ = new BigInteger(10);
         
-        protected GlobalParameters()
+        protected GlobalParametersSDSS1()
         {
             this.GlobalParametersInit();
         }
-        public static GlobalParameters Instance()
+        public static GlobalParametersSDSS1 Instance()
         {
             if (instance == null)
             {
-                instance = new GlobalParameters();
+                instance = new GlobalParametersSDSS1();
             }
             return instance;
         }
@@ -57,11 +55,11 @@ namespace SigncryptionScheme.Signcryption
             RijndaelCryptoSystem = Aes.Create();
             this.RandomNumberP = GenerateRandomNumberP();
             this.RandomNumberQ = GenerateRandomNumberQ();
-            this.RandomNumberN = GenerateRandomNumberN();
-            this.ListContainingAllNValues = ContainingAllElementsofList(this.RandomNumberN);
-            this.RelativePrimesOfN = FindingNsRelativePrimes();
-            this.RandomNumberG = GenerateRandomNumberG();
-
+            this.ListContainingAllQValues = ContainingAllElementsofList(RandomNumberQ);
+            this.ListContainingAllPValues = ContainingAllElementsofList(RandomNumberP);
+            this.RelativePrimesOfQ = FindingRelativePrimes(ListContainingAllQValues, RandomNumberQ);
+            this.RelativePrimesOfP = FindingRelativePrimes(ListContainingAllPValues, RandomNumberP);
+            this.RandomNumberG = ComputeRandomNumberG();
         }
 
         public void GenerateNewParameters()
@@ -137,60 +135,51 @@ namespace SigncryptionScheme.Signcryption
             return tempRandomNumberQ;
         }
 
-        private BigInteger GenerateRandomNumberG()
+        private BigInteger CalculatePhiEulerFunction(BigInteger _primeNumberP)
         {
-            return ComputeRandomNumberG(this.RandomNumberP, this.RandomNumberQ);
+            return _primeNumberP - 1;
         }
 
-        private BigInteger GenerateRandomNumberN()
-        {
-            return BigInteger.Multiply(RandomNumberP, RandomNumberQ);
-        }
-
-        private BigInteger CalculatePhiEulerFunction(BigInteger _primeNumberP, BigInteger _primeNumberQ)
-        {
-            return BigInteger.Multiply(_primeNumberP - 1, _primeNumberQ - 1);
-        }
-
-        private BigInteger ComputeRandomNumberG(BigInteger _primeNumberP, BigInteger _primeNumberQ)
+        private BigInteger ComputeRandomNumberG()
         {
             BigInteger NumberG = BigInteger.Zero;
-            BigInteger PhiEulerResult = CalculatePhiEulerFunction(_primeNumberP, _primeNumberQ);
+            BigInteger PhiEulerResult = CalculatePhiEulerFunction(RandomNumberP);
 
             //List<BigInteger> list = this.RelativePrimesOfN.FindAll(x => BigInteger.ModPow(x, _primeNumberQ - 1, PhiEulerResult) == 1);
-            List<BigInteger> list = this.RelativePrimesOfN.FindAll(x => BigInteger.ModPow(x, PhiEulerResult, this.RandomNumberN) == 1);
+            List<BigInteger> list = this.RelativePrimesOfP.FindAll(x => BigInteger.ModPow(x, PhiEulerResult, RandomNumberP) == 1);
 
 
             if (list.Count == 0)
             {
                 GenerateNewParameters();
-            } else
+            }
+            else
             {
                 NumberG = SelectingRandomListValue(list);
             }
             return NumberG;
         }
 
-        private List<BigInteger> FindingNsRelativePrimes()
+        private List<BigInteger> ContainingAllElementsofList(BigInteger value)
         {
-            List<BigInteger> RelativePrimesOfN = this.ListContainingAllNValues.FindAll(x => BigInteger.GreatestCommonDivisor(x, this.RandomNumberN) == 1);
+            List<BigInteger> listOfN = new List<BigInteger>();
+            for (BigInteger i = 1; i <= value; i++)
+            {
+                listOfN.Add(i);
+            }
+            return listOfN;
+        }
 
-            if(RelativePrimesOfN.Count == 0)
+        private List<BigInteger> FindingRelativePrimes(List<BigInteger> _Values, BigInteger _RandomNumber)
+        {
+            List<BigInteger> RelativePrimesOfN = _Values.FindAll(x => BigInteger.GreatestCommonDivisor(x, _RandomNumber) == 1);
+
+            if (RelativePrimesOfN.Count == 0)
             {
                 GenerateNewParameters();
             }
 
             return RelativePrimesOfN;
-        }
-
-        private List<BigInteger> ContainingAllElementsofList(BigInteger value)
-        {
-            List<BigInteger> listOfN = new List<BigInteger>();
-            for (BigInteger i = 1; i < value; i++)
-            {
-                listOfN.Add(i);
-            }
-            return listOfN;
         }
 
         public BigInteger SelectingRandomListValue(List<BigInteger> _list)
@@ -199,5 +188,6 @@ namespace SigncryptionScheme.Signcryption
             int index = rnd.Next(0, _list.Count);
             return _list[index];
         }
+
     }
 }

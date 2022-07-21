@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 
-namespace SigncryptionScheme
+namespace SigncryptionScheme.Signcryption
 {
     public class KeyGeneration : KeyGenerationAbstract
     {
@@ -21,7 +21,7 @@ namespace SigncryptionScheme
             this.KeyGenerationInit();
         }
 
-        public void KeyGenerationInit()
+        private void KeyGenerationInit()
         {
             this.PrivateKey = GeneratePrivateKey(gb.RandomNumberN, gb.RandomNumberG);
             this.PublicKey = GeneratePublicKey(gb.RandomNumberG, gb.RandomNumberN, this.PrivateKey);
@@ -35,8 +35,7 @@ namespace SigncryptionScheme
 
         protected override BigInteger GeneratePrivateKey(BigInteger _RandomNumberN, BigInteger _RandomNumberG)
         {
-            RandomBigIntegerGenerator RBI = new RandomBigIntegerGenerator();
-            return RBI.RandomBigInteger(BigInteger.Zero, _RandomNumberN - 1); ;
+            return gb.SelectingRandomListValue(gb.RelativePrimesOfN);
         }
 
         protected override BigInteger GeneratePublicKey(BigInteger _RandomNumberG, BigInteger _RandomNumberN, BigInteger _PrivateKey)
