@@ -1,43 +1,84 @@
-﻿using SigncryptionScheme.Computations;
-using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace SigncryptionScheme.Signcryption
 {
+    /// <summary>
+    /// This class <c>KeyGeneration</c> inherits from the <c>KeyGenerationAbstract</c> class.
+    /// It should implement the abstract methods that are defined in that abstract class.
+    /// This class generates public key and the private of each pairs that creates an 
+    /// instance of this class and calls the correspondent methods.
+    /// </summary>
     public class KeyGeneration : KeyGenerationAbstract
     {
+        /// <value>Property <c>PublicKey</c> represents the Public Key.</value>
         public BigInteger PublicKey;
 
-        /* Normally, it is supposed to be secret*/
+        /// <value>Property <c>PrivateKey</c> represents the Private Key.</value>
         public BigInteger PrivateKey;
 
+        /// <value>Property <c>gb</c> represents the instance of the GlobalParameters class.</value>
+        public GlobalParameters gb = GlobalParameters.Instance();
 
-        GlobalParameters gb = GlobalParameters.Instance();
-
+        /// <summary>
+        /// This constructor calls the init function for initilazing private and public key properties that
+        /// are being used by both sender and receiver. Every single time this constructur method is called, 
+        /// it generates different keys for each pair.
+        /// </summary>
         public KeyGeneration()
         {
             this.KeyGenerationInit();
         }
 
+        /// <summary>
+        /// This method initializes public and private key properties by calling correspondent methods.
+        /// </summary>
         private void KeyGenerationInit()
         {
-            this.PrivateKey = GeneratePrivateKey(gb.RandomNumberN, gb.RandomNumberG);
+            this.PrivateKey = GeneratePrivateKey();
             this.PublicKey = GeneratePublicKey(gb.RandomNumberG, gb.RandomNumberN, this.PrivateKey);
         }
 
-        public void GenerateNewKeyes()
+        /// <summary>
+        /// This method is being used for generating new parameters. For example, in the case of session key expires.
+        /// It calls the gb.GenerateNewParameters() method for generating new parameters for everyone, who is involved
+        /// in this communication.
+        /// </summary>
+        protected void GenerateNewKeyes()
         {
             gb.GenerateNewParameters();
             this.KeyGenerationInit();
         }
 
-        protected override BigInteger GeneratePrivateKey(BigInteger _RandomNumberN, BigInteger _RandomNumberG)
+        /// <summary>
+        /// This method generates the private key.
+        /// </summary>
+        /// <returns>
+        /// A Big Integer, selected private key.
+        /// </returns>
+        /// <remarks>
+        /// Private key is selected randomly among the relative primes of large number N.
+        /// </remarks>
+        protected override BigInteger GeneratePrivateKey()
         {
             return gb.SelectingRandomListValue(gb.RelativePrimesOfN);
         }
 
+        /// <summary>
+        /// This method generates the public key.
+        /// (<paramref name="_RandomNumberG"/>,<paramref name="_RandomNumberN"/>,<paramref name="_PrivateKey"/>).
+        /// </summary>
+        /// <returns>
+        /// A Big Integer, computed public key.
+        /// </returns>
+        /// <remarks>
+        /// Public key is computed like: g^{x}modN
+        /// g: _RandomNumberG
+        /// x: _Private Key
+        /// N: _RandomNumberN
+        /// </remarks>
+        /// <param><c>_RandomNumberG</c> is a randomly selected number G.</param>
+        /// <param><c>_RandomNumberN</c> is a computed large number N.</param>
+        /// <param><c>_PrivateKey</c> is a private key of the pair.</param>
         protected override BigInteger GeneratePublicKey(BigInteger _RandomNumberG, BigInteger _RandomNumberN, BigInteger _PrivateKey)
         {
             return BigInteger.ModPow(_RandomNumberG, _PrivateKey, _RandomNumberN);

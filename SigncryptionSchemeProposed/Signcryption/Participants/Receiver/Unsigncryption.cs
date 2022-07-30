@@ -9,14 +9,13 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
 {
     public class Unsigncryption : AbstractSigncryption
     {
-        GlobalParameters gb = GlobalParameters.Instance();
-
         public Unsigncryption()
         {
 
         }
 
-        protected bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver, out string obtainedMessageOut)
+        protected bool UnsigncryptTheMessage(Dictionary<string, byte[]> _signcryptValues, BigInteger _PrivateKeyOfReceiver,
+            GlobalParameters gb, out string obtainedMessageOut)
         {
             byte[] valueA1;
             byte[] valueA2;
@@ -32,18 +31,18 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
             valueC = _signcryptValues[ConstantValuesSigncryption.C];
             valueR = _signcryptValues[ConstantValuesSigncryption.R];
 
-            ObtainedKey1 = this.ObtainKeyK1(valueA1, valueA2, _PrivateKeyOfReceiver);
+            ObtainedKey1 = this.ObtainKeyK1(valueA1, valueA2, _PrivateKeyOfReceiver, gb);
             Key2 = this.ComputeKeyK2(ObtainedKey1);
             Array.Resize(ref Key2, 32);
 
-            obtainedMessage = this.DecryptMessageWithKey2(valueC, Key2);
+            obtainedMessage = this.DecryptMessageWithKey2(valueC, Key2, gb.RijndaelCryptoSystem.IV);
             obtainedMessageOut = obtainedMessage;
             valuePrimeR = this.SignMessageWithKey2(obtainedMessage, Key2);
 
             return this.VerifyTheMessage(valueR, valuePrimeR);
         }
 
-        private BigInteger ObtainKeyK1(byte [] _ValueA1, byte[] _ValueA2, BigInteger _PrivateKey)
+        private BigInteger ObtainKeyK1(byte [] _ValueA1, byte[] _ValueA2, BigInteger _PrivateKey, GlobalParameters gb)
         {
             BigInteger computedValueKeyK1;
             BigInteger valueA1;
@@ -52,7 +51,6 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
             valueA1 = new BigInteger(_ValueA1);
             valueA2 = new BigInteger(_ValueA2);
 
-            //BigInteger tempValue1 = BigInteger.Pow(valueA1, (int)_PrivateKey) % gb.RandomNumberN;
             BigInteger tempValue1 = BigInteger.ModPow(valueA1, _PrivateKey, gb.RandomNumberN);
 
             List<BigInteger> tempList = gb.ListContainingAllNValues.FindAll(x => BigInteger.Multiply(x, tempValue1) % gb.RandomNumberN == 1);
@@ -62,9 +60,9 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
             return computedValueKeyK1;
         }
 
-        private string DecryptMessageWithKey2(byte[] _cipherText, byte[] _keyK2)
+        private string DecryptMessageWithKey2(byte[] _cipherText, byte[] _keyK2, byte[] _IV)
         {
-            return Computation.DecryptStringFromBytes_Aes(_cipherText, _keyK2, gb.RijndaelCryptoSystem.IV);
+            return Computation.DecryptStringFromBytes_Aes(_cipherText, _keyK2, _IV);
         }
 
         private bool VerifyTheMessage(byte[] _Rvalue, byte[] _Rprime)

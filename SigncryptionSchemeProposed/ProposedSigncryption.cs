@@ -36,62 +36,82 @@ namespace ProposedSigncryption
             bool errorStatus = false;
             bool errorStatusSDSS1 = false;
             bool errorStatusSDSS2 = false;
+            List<long> timeDifferencelistProp = new List<long>();
+            List<long> timeDifferencelist1 = new List<long>();
+            List<long> timeDifferencelist2 = new List<long>();
 
-            do
+
+            for (int i = 0; i <= 100; i++)
             {
-                timeDifference = Computation.GetTimeStamp();
-                Receiver Bob = new Receiver();
-                Sender Alice = new Sender();
-                Dictionary<string, byte[]> signcryptValues = Alice.MessageSigncryption(message, Bob.GetPublicKey());
-                errorStatus = Bob.MessageUnsigncryption(signcryptValues, out _message);
-            } while (!errorStatus);
-
-            timeDifference = Computation.GetTimeStamp() - timeDifference;         
-
-            Console.WriteLine("Time difference for Signcryption Proposed: {0}", timeDifference);
-
-            do
-            {
-
-                timeDifference = Computation.GetTimeStamp();
-                ReceiverSDSS1 BobSDSS1 = new ReceiverSDSS1();
-                SenderSDSS1 AliceSDSS1 = new SenderSDSS1();
-                try
+                do
                 {
-                    Dictionary<string, byte[]> signcryptValuesSDSS1 = AliceSDSS1.MessageSigncryption(message, BobSDSS1.GetPublicKey());
-                    errorStatusSDSS1 = BobSDSS1.MessageUnsigncryption(signcryptValuesSDSS1, AliceSDSS1.GetPublicKey(), out _message);
-                }
-                catch
+                    timeDifference = Computation.GetTimeStamp();
+                    Receiver Bob = new Receiver();
+                    Sender Alice = new Sender();
+                    try
+                    {
+                        Dictionary<string, byte[]> signcryptValues = Alice.MessageSigncryption(message, Bob.GetPublicKey());
+                        errorStatus = Bob.MessageUnsigncryption(signcryptValues, out _message);
+                    }
+                    catch
+                    {
+                        errorStatus = false;
+                    }
+                    
+                } while (!errorStatus);
+
+                timeDifference = Computation.GetTimeStamp() - timeDifference;
+                timeDifferencelistProp.Add(timeDifference);
+            
+                do
                 {
-                    errorStatusSDSS1 = false;
-                }
-                
-            } while (!errorStatusSDSS1);
 
-            timeDifference = Computation.GetTimeStamp() - timeDifference;
+                    timeDifference = Computation.GetTimeStamp();
+                    ReceiverSDSS1 BobSDSS1 = new ReceiverSDSS1();
+                    SenderSDSS1 AliceSDSS1 = new SenderSDSS1();
+                    try
+                    {
+                        Dictionary<string, byte[]> signcryptValuesSDSS1 = AliceSDSS1.MessageSigncryption(message, BobSDSS1.GetPublicKey());
+                        errorStatusSDSS1 = BobSDSS1.MessageUnsigncryption(signcryptValuesSDSS1, AliceSDSS1.GetPublicKey(), out _message);
+                    }
+                    catch
+                    {
+                        errorStatusSDSS1 = false;
+                    }
 
-            Console.WriteLine("Time difference for SDSS1: {0}", timeDifference);
+                } while (!errorStatusSDSS1);
 
-            do
-            {
-                timeDifference = Computation.GetTimeStamp();
-                ReceiverSDSS2 BobSDSS2 = new ReceiverSDSS2();
-                SenderSDSS2 AliceSDSS2 = new SenderSDSS2();
-                try
+                timeDifference = Computation.GetTimeStamp() - timeDifference;
+                timeDifferencelist1.Add(timeDifference);
+                        
+                do
                 {
-                    Dictionary<string, byte[]> signcryptValuesSDSS2 = AliceSDSS2.MessageSigncryption(message, BobSDSS2.GetPublicKey());
-                    errorStatusSDSS2 = BobSDSS2.MessageUnsigncryption(signcryptValuesSDSS2, AliceSDSS2.GetPublicKey(), out _message);
-                }
-                catch
-                {
-                    errorStatusSDSS2 = false;
-                }
-                
-            } while (!errorStatusSDSS2);
-           
-            timeDifference = Computation.GetTimeStamp() - timeDifference;
+                    timeDifference = Computation.GetTimeStamp();
+                    ReceiverSDSS2 BobSDSS2 = new ReceiverSDSS2();
+                    SenderSDSS2 AliceSDSS2 = new SenderSDSS2();
+                    try
+                    {
+                        Dictionary<string, byte[]> signcryptValuesSDSS2 = AliceSDSS2.MessageSigncryption(message, BobSDSS2.GetPublicKey());
+                        errorStatusSDSS2 = BobSDSS2.MessageUnsigncryption(signcryptValuesSDSS2, AliceSDSS2.GetPublicKey(), out _message);
+                    }
+                    catch
+                    {
+                        errorStatusSDSS2 = false;
+                    }
 
-            Console.WriteLine("Time difference for SDSS2: {0}", timeDifference);
+                } while (!errorStatusSDSS2);
+
+                timeDifference = Computation.GetTimeStamp() - timeDifference;
+                timeDifferencelist2.Add(timeDifference);
+            }
+
+            timeDifferencelist2.Sort();
+            timeDifferencelist1.Sort();
+            timeDifferencelistProp.Sort();
+
+            Console.WriteLine("Time difference for Signcryption Proposed: {0}", timeDifferencelistProp[0]);
+            Console.WriteLine("Time difference for SDSS1: {0}", timeDifferencelist1[0]);
+            Console.WriteLine("Time difference for SDSS2: {0}", timeDifferencelist2[0]);
         }
     }
 }

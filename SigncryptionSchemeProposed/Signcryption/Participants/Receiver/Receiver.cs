@@ -13,7 +13,7 @@ namespace SigncryptionScheme.Signcryption.Participants.Receiver
 
         public bool MessageUnsigncryption(Dictionary<string, byte[]> _signcryptValues, out string _message_)
         {
-            bool isMessageVerified = this.UnsigncryptTheMessage(_signcryptValues, GetPrivateKey(), out string _message);
+            bool isMessageVerified = this.UnsigncryptTheMessage(_signcryptValues, GetPrivateKey(), kg.gb, out string _message);
 
             if (isMessageVerified)
                 _message_ = _message;
