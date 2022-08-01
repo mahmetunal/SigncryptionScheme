@@ -13,6 +13,7 @@ namespace SigncryptionScheme.Computations
     /// </summary>
     class RandomBigIntegerGenerator
     {
+        #region Public Methods
         /// <summary>
         /// This method generates BigInteger with the given bit length.
         /// (<paramref name="bitLength"/>).
@@ -96,5 +97,6 @@ namespace SigncryptionScheme.Computations
              */
             return ((NextBigInteger(bits + 1) * res) / BigInteger.Pow(2, bits + 1)) + start;
         }
+        #endregion
     }
 }

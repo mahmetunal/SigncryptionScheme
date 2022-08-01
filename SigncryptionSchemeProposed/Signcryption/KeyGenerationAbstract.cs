@@ -10,6 +10,7 @@ namespace SigncryptionScheme.Signcryption
     /// </summary>
     public abstract class KeyGenerationAbstract
     {
+        #region Protected Methods
         /// <summary>
         /// This abstract method shoul be implemented to compute Private Key of the Particaipants.
         /// (<paramref name="_RandomNumberN"/>,<paramref name="_RandomNumberG"/>).
@@ -40,5 +41,6 @@ namespace SigncryptionScheme.Signcryption
         /// <param><c>_RandomNumberN</c> is a large number N.</param>
         /// <param><c>_PrivateKey</c> is a private key of the pair who calls this method.</param>
         protected abstract BigInteger GeneratePublicKey(BigInteger _RandomNumberG, BigInteger _RandomNumberN, BigInteger _PrivateKey);
+        #endregion
     }
 }

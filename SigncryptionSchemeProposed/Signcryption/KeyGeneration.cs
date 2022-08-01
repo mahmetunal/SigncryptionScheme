@@ -10,15 +10,18 @@ namespace SigncryptionScheme.Signcryption
     /// </summary>
     public class KeyGeneration : KeyGenerationAbstract
     {
+        #region Properties
         /// <value>Property <c>PublicKey</c> represents the Public Key.</value>
         public BigInteger PublicKey;
 
         /// <value>Property <c>PrivateKey</c> represents the Private Key.</value>
         public BigInteger PrivateKey;
 
-        /// <value>Property <c>gb</c> represents the instance of the GlobalParameters class.</value>
-        public GlobalParameters gb = GlobalParameters.Instance();
+        /// <value>Property <c>globalParameters</c> represents the instance of the GlobalParameters class.</value>
+        public GlobalParameters globalParameters = GlobalParameters.Instance();
+        #endregion
 
+        #region Constructor 
         /// <summary>
         /// This constructor calls the init function for initilazing private and public key properties that
         /// are being used by both sender and receiver. Every single time this constructur method is called, 
@@ -28,16 +31,20 @@ namespace SigncryptionScheme.Signcryption
         {
             this.KeyGenerationInit();
         }
+        #endregion
 
+        #region Private Methods
         /// <summary>
         /// This method initializes public and private key properties by calling correspondent methods.
         /// </summary>
         private void KeyGenerationInit()
         {
             this.PrivateKey = GeneratePrivateKey();
-            this.PublicKey = GeneratePublicKey(gb.RandomNumberG, gb.RandomNumberN, this.PrivateKey);
+            this.PublicKey = GeneratePublicKey(globalParameters.RandomNumberG, globalParameters.RandomNumberN, this.PrivateKey);
         }
+        #endregion
 
+        #region Protected Methods
         /// <summary>
         /// This method is being used for generating new parameters. For example, in the case of session key expires.
         /// It calls the gb.GenerateNewParameters() method for generating new parameters for everyone, who is involved
@@ -45,7 +52,7 @@ namespace SigncryptionScheme.Signcryption
         /// </summary>
         protected void GenerateNewKeyes()
         {
-            gb.GenerateNewParameters();
+            globalParameters.GenerateNewParameters();
             this.KeyGenerationInit();
         }
 
@@ -60,7 +67,7 @@ namespace SigncryptionScheme.Signcryption
         /// </remarks>
         protected override BigInteger GeneratePrivateKey()
         {
-            return gb.SelectingRandomListValue(gb.RelativePrimesOfN);
+            return globalParameters.SelectingRandomListValue(globalParameters.RelativePrimesOfN);
         }
 
         /// <summary>
@@ -83,5 +90,6 @@ namespace SigncryptionScheme.Signcryption
         {
             return BigInteger.ModPow(_RandomNumberG, _PrivateKey, _RandomNumberN);
         }
+        #endregion
     }
 }

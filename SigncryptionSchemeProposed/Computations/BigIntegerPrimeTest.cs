@@ -13,6 +13,7 @@ namespace SigncryptionScheme.Computations
     /// </summary>
     public class BigIntegerPrimeTest
     {
+        #region Public Methods
         /// <summary>
         /// This method finds the factors of the given number
         /// Contribution: this method is obtained and adapted from the stackoverflow forum
@@ -108,5 +109,6 @@ namespace SigncryptionScheme.Computations
 
             return true;
         }
+        #endregion
     }
 }

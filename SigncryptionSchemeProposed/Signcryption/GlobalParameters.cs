@@ -13,10 +13,12 @@ namespace SigncryptionScheme.Signcryption
     /// </summary>
     public static class ConstantValuesSigncryption
     {
+        #region Properties
         public static string A1 = "A1";
         public static string A2 = "A2";
         public static string C = "C";
         public static string R = "R";
+        #endregion
     }
 
     /// <summary>
@@ -32,8 +34,9 @@ namespace SigncryptionScheme.Signcryption
          * And reachable from both side's key generation
          ************/
 
+        #region Properties
         /// <value>Property <c>instance</c> represents the instance of Global Parameters class.</value>
-        static GlobalParameters instance;
+        static GlobalParameters globalParametersInstance;
 
         /// <value>Property <c>RandomNumberP</c> represents the large prime number Q.</value>
         public BigInteger RandomNumberP;
@@ -60,7 +63,9 @@ namespace SigncryptionScheme.Signcryption
         /// <value>Property <c>RelativePrimesOfN</c> represents the list of big integers that stores all the relative
         /// primes of N.</value>
         public List<BigInteger> RelativePrimesOfN;
+        #endregion
 
+        #region Constructor
         /// <summary>
         /// This constructor calls the init function for initilazing global parameters that
         /// are being used by both sender and receiver in signcryption and unsigncryption preocess.
@@ -69,7 +74,9 @@ namespace SigncryptionScheme.Signcryption
         {
             this.GlobalParametersInit();
         }
+        #endregion
 
+        #region Public Methods
         /// <summary>
         /// This method checks whether or not there is an instance of Global Parameters class.
         /// Because global parameters are assumed that both sender and receiver agree on. Therefore,
@@ -80,13 +87,41 @@ namespace SigncryptionScheme.Signcryption
         /// </returns>
         public static GlobalParameters Instance()
         {
-            if (instance == null)
+            if (globalParametersInstance == null)
             {
-                instance = new GlobalParameters();
+                globalParametersInstance = new GlobalParameters();
             }
-            return instance;
+            return globalParametersInstance;
         }
 
+        /// <summary>
+        /// If there is something wrong about the parameters, this method can be called.
+        /// For instance, in the case of session expired, participants should get new keys 
+        /// and they should agree on new parameters.
+        /// </summary>
+        public void GenerateNewParameters()
+        {
+            this.GlobalParametersInit();
+        }
+
+
+        /// <summary>
+        /// This method selects random value from the given list.
+        /// (<paramref name="_list"/>).
+        /// </summary>
+        /// <returns>
+        /// A Big Integer selected randomly.
+        /// </returns>
+        /// <param><c>_list</c> is a list that stores big integer values</param>
+        public BigInteger SelectingRandomListValue(List<BigInteger> _list)
+        {
+            Random rnd = new Random();
+            int index = rnd.Next(0, _list.Count);
+            return _list[index];
+        }
+        #endregion
+
+        #region Private Methods
         /// <summary>
         /// This method assigns all the generated values to the correspondent properties.
         /// Basically, it generates all the global parameters that both sender and receiver
@@ -101,16 +136,6 @@ namespace SigncryptionScheme.Signcryption
             this.ListContainingAllNValues = ContainingAllElementsofList(this.RandomNumberN);
             this.RelativePrimesOfN = FindingNsRelativePrimes();
             this.RandomNumberG = GenerateRandomNumberG();
-        }
-
-        /// <summary>
-        /// If there is something wrong about the parameters, this method can be called.
-        /// For instance, in the case of session expired, participants should get new keys 
-        /// and they should agree on new parameters.
-        /// </summary>
-        public void GenerateNewParameters()
-        {
-            this.GlobalParametersInit();   
         }
 
         /// <summary>
@@ -315,20 +340,6 @@ namespace SigncryptionScheme.Signcryption
             }
             return listOfN;
         }
-
-        /// <summary>
-        /// This method selects random value from the given list.
-        /// (<paramref name="_list"/>).
-        /// </summary>
-        /// <returns>
-        /// A Big Integer selected randomly.
-        /// </returns>
-        /// <param><c>_list</c> is a list that stores big integer values</param>
-        public BigInteger SelectingRandomListValue(List<BigInteger> _list)
-        {
-            Random rnd = new Random();
-            int index = rnd.Next(0, _list.Count);
-            return _list[index];
-        }
+        #endregion
     }
 }

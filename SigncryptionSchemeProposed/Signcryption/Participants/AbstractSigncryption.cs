@@ -6,8 +6,9 @@ namespace SigncryptionScheme.Signcryption
     /// This abstract class <c>AbstractSigncryption</c> contains the common methods for being used in both
     /// signcryption and unsigncryption processes.
     /// </summary>
-    public abstract class AbstractSigncryption
+    public class AbstractSigncryption
     {
+        #region Protected Methods
         /// <summary>
         /// This method computes the key2 in both signcryption and unsigncryption processes..
         /// (<paramref name="_keyKey1"/>).
@@ -65,5 +66,6 @@ namespace SigncryptionScheme.Signcryption
                 Computation.KeyedHashStringToBytes_SHA1(_message,
                 Computation.HashBigIntegerToBytes_SHA1(_PublicKeyReceiver)), _keyK2);
         }
+        #endregion
     }
 }

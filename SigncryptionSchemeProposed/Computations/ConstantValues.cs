@@ -11,6 +11,7 @@ namespace SigncryptionScheme.Computations
     /// </summary>
     public static class ConstantValeus
     {
+        #region Properties
         /// <summary>
         /// Instance variable <c>startPointc> represents the minimum value
         /// of big integer that are produced randomly within a specific range.
@@ -27,6 +28,7 @@ namespace SigncryptionScheme.Computations
         /// Instance variable <c>lowerLimitofQ</c> represents minimum value
         /// of Random Number Q. In this case, it could not be less than 10.
         /// </summary>
-        public static BigInteger lowerLimitofQ = new BigInteger(10); 
+        public static BigInteger lowerLimitofQ = new BigInteger(10);
+        #endregion
     }
 }

@@ -13,15 +13,18 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
     /// </summary>
     public class Signcryption : AbstractSigncryption
     {
+        #region Constructor
         public Signcryption()
         {
 
         }
+        #endregion
 
+        #region Protected Methods
         /// <summary>
         /// This method computes the values that are generated after the signcrryption process.
         /// (<paramref name="message"/>,<paramref name="_PublicKeyReceiver"/>,<paramref name="_Beta"/>,
-        ///     <paramref name="_KeyK1"/>,<paramref name="gb"/>).
+        ///     <paramref name="_KeyK1"/>,<paramref name="globalParameters"/>).
         /// </summary>
         /// <returns>
         /// A dictionary with byte arrays containing signcryption output values, namely; A1, A2, C, and R.
@@ -34,9 +37,9 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
         /// <param><c>_PublicKeyReceiver</c> is a public key of the receiver.</param>
         /// <param><c>_Beta</c> is a computed secret value by the sender.</param>
         /// <param><c>_KeyK1</c> is a randomly chosen secret key by the sender.</param>
-        /// <param><c>gb</c> is an instance of <c>GlobalParameters</c> class.</param>
+        /// <param><c>globalParameters</c> is an instance of <c>GlobalParameters</c> class.</param>
         protected Dictionary<string, byte[]> SigncryptTheMessage(string message, BigInteger _PublicKeyReceiver, 
-            BigInteger _Beta, BigInteger _KeyK1, GlobalParameters gb)
+            BigInteger _Beta, BigInteger _KeyK1, GlobalParameters globalParameters)
         {
             Dictionary<string, byte[]> SignCryptValues = new Dictionary<string, byte[]>();
 
@@ -48,8 +51,8 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
             byte[] ComputedValueR;
             byte[] ComputedValueC;
 
-            ComputedValueA1 = ComputeA1(_Beta, gb);
-            ComputedValueA2 = ComputeA2(_Beta, _KeyK1, _PublicKeyReceiver, gb.RandomNumberN);          
+            ComputedValueA1 = ComputeA1(_Beta, globalParameters);
+            ComputedValueA2 = ComputeA2(_Beta, _KeyK1, _PublicKeyReceiver, globalParameters.RandomNumberN);          
             ComputedValueA1Final = ComputedValueA1.ToByteArray();
             ComputedValueA2Final = ComputedValueA2.ToByteArray();
 
@@ -58,7 +61,7 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
             //ComputedValueKey2 is being resized because of the fact that Rijndael Algorithm accepts 256 bit key
             Array.Resize(ref ComputedValueKey2, 32);  
 
-            ComputedValueC = EncryptMessageWithKey2(message, ComputedValueKey2, gb.RijndaelCryptoSystem.IV);
+            ComputedValueC = EncryptMessageWithKey2(message, ComputedValueKey2, globalParameters.RijndaelCryptoSystem.IV);
             ComputedValueR = SignMessageWithKey2(message, ComputedValueKey2);
 
 
@@ -73,10 +76,12 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
 
             return SignCryptValues;
         }
+        #endregion
 
+        #region Private Methods
         /// <summary>
         /// This method computes the A1 value in the signcryption process.
-        /// (<paramref name="_beta"/>,<paramref name="gb"/>).
+        /// (<paramref name="_beta"/>,<paramref name="globalParameters"/>).
         /// </summary>
         /// <returns>
         /// A big integer, computed A1.
@@ -85,10 +90,10 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
         /// It computes A1 value as following; A1=g^{beta}modN.
         /// </remarks>
         /// <param><c>_beta</c> is a computed value by the sender.</param>
-        /// <param><c>gb</c> is an instance of <c>GlobalParameters</c> class.</param>
-        private BigInteger ComputeA1(BigInteger _beta, GlobalParameters gb)
+        /// <param><c>globalParameters</c> is an instance of <c>GlobalParameters</c> class.</param>
+        private BigInteger ComputeA1(BigInteger _beta, GlobalParameters globalParameters)
         {
-            return BigInteger.ModPow(gb.RandomNumberG, _beta, gb.RandomNumberN);
+            return BigInteger.ModPow(globalParameters.RandomNumberG, _beta, globalParameters.RandomNumberN);
         }
 
 
@@ -129,6 +134,6 @@ namespace SigncryptionScheme.Signcryption.Participants.Sender
         {
             return Computation.EncryptStringToBytes_Aes(_message, _keyK2, _IV);
         }
-
+        #endregion
     }
 }
