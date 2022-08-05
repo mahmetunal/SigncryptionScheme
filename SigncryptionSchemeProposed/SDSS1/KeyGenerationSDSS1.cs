@@ -14,7 +14,7 @@ namespace SigncryptionScheme.SDSS1
         public BigInteger PrivateKey;
 
 
-        GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
+        GlobalParametersSDSS1 globalParametersSdss1 = GlobalParametersSDSS1.Instance();
 
         public KeyGenerationSDSS1()
         {
@@ -24,18 +24,18 @@ namespace SigncryptionScheme.SDSS1
         private void KeyGenerationInit()
         {
             this.PrivateKey = GeneratePrivateKey();
-            this.PublicKey = GeneratePublicKey(gb.RandomNumberG, gb.RandomNumberP, this.PrivateKey);
+            this.PublicKey = GeneratePublicKey(globalParametersSdss1.RandomNumberG, globalParametersSdss1.RandomNumberP, this.PrivateKey);
         }
 
         public void GenerateNewKeyes()
         {
-            gb.GenerateNewParameters();
+            globalParametersSdss1.GenerateNewParameters();
             this.KeyGenerationInit();
         }
 
         protected override BigInteger GeneratePrivateKey()
         {
-            return gb.SelectingRandomListValue(gb.RelativePrimesOfQ);
+            return globalParametersSdss1.SelectingRandomListValue(globalParametersSdss1.ListContainingAllQValues);
 
         }
 

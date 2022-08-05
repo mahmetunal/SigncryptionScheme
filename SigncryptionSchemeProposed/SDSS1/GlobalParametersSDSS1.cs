@@ -32,10 +32,6 @@ namespace SigncryptionScheme.SDSS1
         public List<BigInteger> ListContainingAllPValues;
         public List<BigInteger> RelativePrimesOfQ;
         public List<BigInteger> RelativePrimesOfP;
-
-        public static BigInteger startPoint = new BigInteger(Math.Pow(2, 5));
-        public static BigInteger endPoint = new BigInteger(Math.Pow(2, 10));
-        public static BigInteger lowerLimitofQ = new BigInteger(10);
         
         protected GlobalParametersSDSS1()
         {
@@ -76,7 +72,7 @@ namespace SigncryptionScheme.SDSS1
 
                 while (!isPrimeFound)
                 {
-                    tempRandomNumberP = RBI.RandomBigInteger(startPoint, endPoint);
+                    tempRandomNumberP = RBI.RandomBigInteger(ConstantValeus.startPoint, ConstantValeus.endPoint);
                     BigIntegerPrimeTest BIPT = new BigIntegerPrimeTest();
                     isPrimeFound = BIPT.IsProbablePrime(tempRandomNumberP, 100);
                 }
@@ -111,7 +107,7 @@ namespace SigncryptionScheme.SDSS1
                     primeFactors = primeFactors.FindAll(
                         delegate (BigInteger bg)
                         {
-                            return BIPT.IsProbablePrime(bg, 100) && bg > lowerLimitofQ;
+                            return BIPT.IsProbablePrime(bg, 100) && bg > ConstantValeus.lowerLimitofQ;
                         }
                     );
 
@@ -131,7 +127,6 @@ namespace SigncryptionScheme.SDSS1
                 Console.WriteLine("_primeNumber\nException Occured: {0} !!", e.Message);
             }
 
-
             return tempRandomNumberQ;
         }
 
@@ -145,8 +140,8 @@ namespace SigncryptionScheme.SDSS1
             BigInteger NumberG = BigInteger.Zero;
             BigInteger PhiEulerResult = CalculatePhiEulerFunction(RandomNumberP);
 
-            //List<BigInteger> list = this.RelativePrimesOfN.FindAll(x => BigInteger.ModPow(x, _primeNumberQ - 1, PhiEulerResult) == 1);
             List<BigInteger> list = this.RelativePrimesOfP.FindAll(x => BigInteger.ModPow(x, PhiEulerResult, RandomNumberP) == 1);
+            //List<BigInteger> list = this.RelativePrimesOfQ.FindAll(x => BigInteger.ModPow(x, PhiEulerResult, RandomNumberQ) == 1 && x != 1);
 
 
             if (list.Count == 0)
@@ -162,30 +157,30 @@ namespace SigncryptionScheme.SDSS1
 
         private List<BigInteger> ContainingAllElementsofList(BigInteger value)
         {
-            List<BigInteger> listOfN = new List<BigInteger>();
+            List<BigInteger> elementsList = new List<BigInteger>();
             for (BigInteger i = 1; i <= value; i++)
             {
-                listOfN.Add(i);
+                elementsList.Add(i);
             }
-            return listOfN;
+            return elementsList;
         }
 
         private List<BigInteger> FindingRelativePrimes(List<BigInteger> _Values, BigInteger _RandomNumber)
         {
-            List<BigInteger> RelativePrimesOfN = _Values.FindAll(x => BigInteger.GreatestCommonDivisor(x, _RandomNumber) == 1);
+            List<BigInteger> RelativePrimesOfNumber = _Values.FindAll(x => BigInteger.GreatestCommonDivisor(x, _RandomNumber) == 1);
 
-            if (RelativePrimesOfN.Count == 0)
+            if (RelativePrimesOfNumber.Count == 0)
             {
                 GenerateNewParameters();
             }
 
-            return RelativePrimesOfN;
+            return RelativePrimesOfNumber;
         }
 
         public BigInteger SelectingRandomListValue(List<BigInteger> _list)
         {
             Random rnd = new Random();
-            int index = rnd.Next(0, _list.Count);
+            int index = rnd.Next(1, _list.Count-1);
             return _list[index];
         }
 

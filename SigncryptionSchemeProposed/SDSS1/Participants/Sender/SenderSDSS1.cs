@@ -9,27 +9,37 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
         GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
 
         private BigInteger RandomNumberX;
-        private KeyGenerationSDSS1 kg;
+        private KeyGenerationSDSS1 keyGenerationSdss1;
 
 
         public SenderSDSS1()
         {
-            kg = new KeyGenerationSDSS1();
+            keyGenerationSdss1 = new KeyGenerationSDSS1();
             RandomNumberX = this.GenerateRandomNumberX();
         }
 
         public Dictionary<string, byte[]> MessageSigncryption(string message, BigInteger _PublicKeyReceiver)
         {
-            return this.SigncryptTheMessage(message, _PublicKeyReceiver, this.RandomNumberX, GetPrivateKey());
+            bool isErrorOccured = false;
+            Dictionary<string, byte[]> signcryptValues = new Dictionary<string, byte[]>();
+
+            do
+            {
+                if (isErrorOccured)
+                    RandomNumberX = this.GenerateRandomNumberX();
+                signcryptValues = this.SigncryptTheMessage(message, _PublicKeyReceiver, this.RandomNumberX, GetPrivateKey(), out isErrorOccured);
+            } while (isErrorOccured);
+
+            return signcryptValues;
         }
 
         public BigInteger GetPublicKey()
         {
-            return kg.PublicKey;
+            return keyGenerationSdss1.PublicKey;
         }
         private BigInteger GetPrivateKey()
         {
-            return kg.PrivateKey;
+            return keyGenerationSdss1.PrivateKey;
         }
 
         private BigInteger GenerateRandomNumberX()
