@@ -73,11 +73,11 @@ namespace SigncryptionProposed.Forms
                 {
 
                     bool errorStatus = false;
-                    do
-                    {
+                    //do
+                    //{
                         timeDifferenceFull = Computation.GetTimeStamp();
-                        try
-                        {
+                        //try
+                        //{
                             Receiver Bob = new Receiver();
                             Sender Alice = new Sender();
 
@@ -89,13 +89,13 @@ namespace SigncryptionProposed.Forms
                             timeDifferenceUnsign = Computation.GetTimeStamp();
                             errorStatus = Bob.MessageUnsigncryption(signcryptValues, out string _message);
                             timeDifferenceUnsign = Computation.GetTimeStamp() - timeDifferenceUnsign;
-                        }
-                        catch
-                        {
-                            errorStatus = false;
-                        }
+                        //}
+                        //catch
+                        //{
+                          //  errorStatus = false;
+                       // }
 
-                    } while (!errorStatus);
+                    //} while (!errorStatus);
 
                     timeDifferenceFull = Computation.GetTimeStamp() - timeDifferenceFull;
 

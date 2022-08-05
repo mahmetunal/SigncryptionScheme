@@ -12,13 +12,13 @@ namespace SigncryptionProposed.Forms
         public static string ProducedLabelText = "Produced by Mahmut Ahmet Unal - King\'s College London MSc Cyber Security";
         public static string ComparisonLabelTextMainPage = "You can compare this signcryption scheme\n " +
             "with the Sdss1 and Sdss2 schemes\n" +
-            "by clicking the button below";
+            "by clicking the button above";
         public static string MainPageHeader = "Signcryption Proposed";
         public static string ComparisonButtonTextMainPage = "Make a Comparison";
         public static string ExecutionButtonTextMainPage = "See Execution Times";
         public static string ExecutionLabelTextMainPage = "You can compare the execution times of proposed\n " +
             "signcryption scheme for each execution\n" +
-            "by clicking the button below";
+            "by clicking the button above";
         /// <summary>
         /// Constant values for plot form page
         /// </summary>
@@ -60,7 +60,7 @@ namespace SigncryptionProposed.Forms
         /// Message Box Common Strings
         /// </summary>
         public static string InfoMessageText = "This program signcrypts and then unsigncrypts all txt files in the Datasets folder. Also, " +
-            "do not forget to arrange loop cpunt as processing it could take time.";
+            "do not forget to arrange loop count as execution time could take significant time.";
         public static string InfoMessageHeader = "Information";
     }
 }

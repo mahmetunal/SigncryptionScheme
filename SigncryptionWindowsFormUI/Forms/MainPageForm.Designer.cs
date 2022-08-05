@@ -76,7 +76,7 @@ namespace SigncryptionProposed
             this.infoAboutProgram.Size = new System.Drawing.Size(275, 60);
             this.infoAboutProgram.TabIndex = 1;
             this.infoAboutProgram.Text = "You can compare this signcryption \r\nscheme with the Sdss1 and Sdss2 \r\nschemes by " +
-    "clicking the button  below";
+    "clicking the button above";
             this.infoAboutProgram.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -135,7 +135,7 @@ namespace SigncryptionProposed
             this.executionTimeLabel.Size = new System.Drawing.Size(311, 60);
             this.executionTimeLabel.TabIndex = 10;
             this.executionTimeLabel.Text = "You can compare the execution times \r\nof the scheme proposed for each execution\r\n" +
-    "by clicking the button below";
+    "by clicking the button above";
             this.executionTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // executionTimeButton
