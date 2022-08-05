@@ -1,4 +1,6 @@
 ﻿
+using SigncryptionProposed.Forms;
+
 namespace SigncryptionProposed
 {
     partial class MainPageForm
@@ -36,8 +38,13 @@ namespace SigncryptionProposed
             this.labelEnd = new System.Windows.Forms.Label();
             this.kclLogo = new System.Windows.Forms.PictureBox();
             this.kclLogoEnd = new System.Windows.Forms.PictureBox();
+            this.executionTimeLabel = new System.Windows.Forms.Label();
+            this.executionTimeButton = new System.Windows.Forms.Button();
+            this.loopCountLabel = new System.Windows.Forms.Label();
+            this.loopCount = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.kclLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.kclLogoEnd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loopCount)).BeginInit();
             this.SuspendLayout();
             // 
             // btnShowInformation
@@ -48,7 +55,7 @@ namespace SigncryptionProposed
             this.btnShowInformation.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnShowInformation.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.btnShowInformation.ForeColor = System.Drawing.Color.White;
-            this.btnShowInformation.Location = new System.Drawing.Point(340, 251);
+            this.btnShowInformation.Location = new System.Drawing.Point(530, 288);
             this.btnShowInformation.Name = "btnShowInformation";
             this.btnShowInformation.Size = new System.Drawing.Size(180, 57);
             this.btnShowInformation.TabIndex = 0;
@@ -62,14 +69,14 @@ namespace SigncryptionProposed
             | System.Windows.Forms.AnchorStyles.Right)));
             this.infoAboutProgram.AutoSize = true;
             this.infoAboutProgram.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.infoAboutProgram.Font = new System.Drawing.Font("Segoe UI", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
+            this.infoAboutProgram.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.infoAboutProgram.ForeColor = System.Drawing.Color.Black;
-            this.infoAboutProgram.Location = new System.Drawing.Point(188, 186);
+            this.infoAboutProgram.Location = new System.Drawing.Point(483, 359);
             this.infoAboutProgram.Name = "infoAboutProgram";
-            this.infoAboutProgram.Size = new System.Drawing.Size(498, 40);
+            this.infoAboutProgram.Size = new System.Drawing.Size(275, 60);
             this.infoAboutProgram.TabIndex = 1;
-            this.infoAboutProgram.Text = "You can compare this signcryption scheme with the Sdss1 and Sdss2 \nschemes by pre" +
-    "ssıng the button below";
+            this.infoAboutProgram.Text = "You can compare this signcryption \r\nscheme with the Sdss1 and Sdss2 \r\nschemes by " +
+    "clicking the button  below";
             this.infoAboutProgram.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label2
@@ -77,18 +84,20 @@ namespace SigncryptionProposed
             this.label2.Location = new System.Drawing.Point(0, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(100, 23);
-            this.label2.TabIndex = 6;
+            this.label2.TabIndex = 11;
             // 
             // labelEnd
             // 
             this.labelEnd.AutoSize = true;
-            this.labelEnd.BackColor = System.Drawing.Color.White;
-            this.labelEnd.ForeColor = System.Drawing.Color.Black;
-            this.labelEnd.Location = new System.Drawing.Point(167, 412);
+            this.labelEnd.BackColor = System.Drawing.Color.Transparent;
+            this.labelEnd.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelEnd.ForeColor = System.Drawing.Color.Firebrick;
+            this.labelEnd.Location = new System.Drawing.Point(221, 110);
             this.labelEnd.Name = "labelEnd";
-            this.labelEnd.Size = new System.Drawing.Size(533, 20);
+            this.labelEnd.Size = new System.Drawing.Size(426, 20);
             this.labelEnd.TabIndex = 3;
-            this.labelEnd.Text = "Produced by Mahmut Ahmet UNAL - King\'s College London MSc Cyber Security";
+            this.labelEnd.Text = "Produced by Mahmut Ahmet Unal - KCL Cyber Security MSc";
+            this.labelEnd.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // kclLogo
             // 
@@ -113,12 +122,93 @@ namespace SigncryptionProposed
             this.kclLogoEnd.TabIndex = 7;
             this.kclLogoEnd.TabStop = false;
             // 
+            // executionTimeLabel
+            // 
+            this.executionTimeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.executionTimeLabel.AutoSize = true;
+            this.executionTimeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.executionTimeLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.executionTimeLabel.ForeColor = System.Drawing.Color.Black;
+            this.executionTimeLabel.Location = new System.Drawing.Point(64, 359);
+            this.executionTimeLabel.Name = "executionTimeLabel";
+            this.executionTimeLabel.Size = new System.Drawing.Size(311, 60);
+            this.executionTimeLabel.TabIndex = 10;
+            this.executionTimeLabel.Text = "You can compare the execution times \r\nof the scheme proposed for each execution\r\n" +
+    "by clicking the button below";
+            this.executionTimeLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // executionTimeButton
+            // 
+            this.executionTimeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.executionTimeButton.BackColor = System.Drawing.Color.Firebrick;
+            this.executionTimeButton.FlatAppearance.BorderSize = 0;
+            this.executionTimeButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.executionTimeButton.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.executionTimeButton.ForeColor = System.Drawing.Color.White;
+            this.executionTimeButton.Location = new System.Drawing.Point(122, 288);
+            this.executionTimeButton.Name = "executionTimeButton";
+            this.executionTimeButton.Size = new System.Drawing.Size(180, 57);
+            this.executionTimeButton.TabIndex = 9;
+            this.executionTimeButton.Text = "See Execution Times";
+            this.executionTimeButton.UseVisualStyleBackColor = false;
+            this.executionTimeButton.Click += new System.EventHandler(this.executionTimeButton_Click);
+            // 
+            // loopCountLabel
+            // 
+            this.loopCountLabel.AutoSize = true;
+            this.loopCountLabel.BackColor = System.Drawing.Color.Transparent;
+            this.loopCountLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.loopCountLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.loopCountLabel.Location = new System.Drawing.Point(202, 161);
+            this.loopCountLabel.Name = "loopCountLabel";
+            this.loopCountLabel.Size = new System.Drawing.Size(464, 60);
+            this.loopCountLabel.TabIndex = 13;
+            this.loopCountLabel.Text = "You can specify how many times this program loops for each file.\r\nThe more it loo" +
+    "ps, the better result it gets.\r\nHowever, it could take significant time.";
+            this.loopCountLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // loopCount
+            // 
+            this.loopCount.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.loopCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.loopCount.ForeColor = System.Drawing.Color.Firebrick;
+            this.loopCount.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.loopCount.Location = new System.Drawing.Point(350, 238);
+            this.loopCount.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.loopCount.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.loopCount.Name = "loopCount";
+            this.loopCount.Size = new System.Drawing.Size(150, 27);
+            this.loopCount.TabIndex = 14;
+            this.loopCount.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.loopCount.ValueChanged += new System.EventHandler(this.loopCount_ValueChanged);
+            // 
             // MainPageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(856, 552);
+            this.Controls.Add(this.loopCount);
+            this.Controls.Add(this.loopCountLabel);
+            this.Controls.Add(this.executionTimeLabel);
+            this.Controls.Add(this.executionTimeButton);
             this.Controls.Add(this.kclLogoEnd);
             this.Controls.Add(this.kclLogo);
             this.Controls.Add(this.labelEnd);
@@ -131,6 +221,7 @@ namespace SigncryptionProposed
             this.Text = "Signcryption Proposed";
             ((System.ComponentModel.ISupportInitialize)(this.kclLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.kclLogoEnd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loopCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,6 +235,10 @@ namespace SigncryptionProposed
         private System.Windows.Forms.Label labelEnd;
         private System.Windows.Forms.PictureBox kclLogo;
         private System.Windows.Forms.PictureBox kclLogoEnd;
+        private System.Windows.Forms.Label executionTimeLabel;
+        private System.Windows.Forms.Button executionTimeButton;
+        private System.Windows.Forms.Label loopCountLabel;
+        private System.Windows.Forms.NumericUpDown loopCount;
     }
 }
 

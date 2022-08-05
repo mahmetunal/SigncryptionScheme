@@ -1,7 +1,7 @@
 ﻿
 namespace SigncryptionProposed.Forms
 {
-    partial class PlotForm
+    partial class PlotFormProposed
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace SigncryptionProposed.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlotForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlotFormProposed));
             this.comparisonPlot = new ScottPlot.FormsPlot();
             this.btnGoBackToMainPage = new System.Windows.Forms.Button();
             this.kclLogo = new System.Windows.Forms.PictureBox();
@@ -60,7 +60,7 @@ namespace SigncryptionProposed.Forms
             this.btnGoBackToMainPage.Name = "btnGoBackToMainPage";
             this.btnGoBackToMainPage.Size = new System.Drawing.Size(187, 53);
             this.btnGoBackToMainPage.TabIndex = 1;
-            this.btnGoBackToMainPage.Text = "Go Back To Main Page";
+            this.btnGoBackToMainPage.Text = ConstantValuesForm.GoBackButtonTextPlotForm;
             this.btnGoBackToMainPage.UseVisualStyleBackColor = false;
             this.btnGoBackToMainPage.Click += new System.EventHandler(this.btnGoBackToMainPage_Click);
             // 
@@ -84,7 +84,7 @@ namespace SigncryptionProposed.Forms
             this.fileSizeInfo.Name = "fileSizeInfo";
             this.fileSizeInfo.Size = new System.Drawing.Size(121, 28);
             this.fileSizeInfo.TabIndex = 6;
-            this.fileSizeInfo.Text = "File Size (kb)";
+            this.fileSizeInfo.Text = ConstantValuesForm.LabelFileSizeText;
             // 
             // secondInfo
             // 
@@ -95,7 +95,7 @@ namespace SigncryptionProposed.Forms
             this.secondInfo.Name = "secondInfo";
             this.secondInfo.Size = new System.Drawing.Size(48, 125);
             this.secondInfo.TabIndex = 7;
-            this.secondInfo.Text = "T\ni\nm\ne\n(ms)";
+            this.secondInfo.Text = ConstantValuesForm.labelTimeText;
             this.secondInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnMakeComparison
@@ -107,7 +107,7 @@ namespace SigncryptionProposed.Forms
             this.btnMakeComparison.Name = "btnMakeComparison";
             this.btnMakeComparison.Size = new System.Drawing.Size(187, 53);
             this.btnMakeComparison.TabIndex = 9;
-            this.btnMakeComparison.Text = "Create Scatter Graph";
+            this.btnMakeComparison.Text = ConstantValuesForm.CreateScatterGraphButtonText;
             this.btnMakeComparison.UseVisualStyleBackColor = false;
             this.btnMakeComparison.Click += new System.EventHandler(this.btnScatterGraph_Click);
             // 
@@ -130,7 +130,7 @@ namespace SigncryptionProposed.Forms
             this.barGraphButton.Name = "barGraphButton";
             this.barGraphButton.Size = new System.Drawing.Size(187, 53);
             this.barGraphButton.TabIndex = 11;
-            this.barGraphButton.Text = "Create Bar Graph";
+            this.barGraphButton.Text = ConstantValuesForm.CreateBarGraphButtonText;
             this.barGraphButton.UseVisualStyleBackColor = false;
             this.barGraphButton.Click += new System.EventHandler(this.barGraphButton_Click);
             // 
@@ -150,7 +150,7 @@ namespace SigncryptionProposed.Forms
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "PlotForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Signcryption Proposed - Comparison with Sdss1 and Sdss2";
+            this.Text = ConstantValuesForm.PlotFormHeaderText;
             ((System.ComponentModel.ISupportInitialize)(this.kclLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

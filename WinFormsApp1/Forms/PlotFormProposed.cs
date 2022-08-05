@@ -17,20 +17,11 @@ using System.Windows.Forms;
 
 namespace SigncryptionProposed.Forms
 {
-    public partial class PlotForm : Form
-    {
-        static PlotForm instance;
-        static int LoopCount = 2;
-        
-        public PlotForm()
+    public partial class PlotFormProposed : Form
+    {   
+        public PlotFormProposed()
         {
             InitializeComponent();
-        }
-
-        private void FormsPlot1_Load(object sender, EventArgs e)
-        {
-            
-
         }
 
         private void btnGoBackToMainPage_Click(object sender, EventArgs e)
@@ -72,7 +63,7 @@ namespace SigncryptionProposed.Forms
         private List<List<double>> ExecuteSigncryption()
         {
             var ProgressBar = this.progressBar;
-            var Header = this.Text = "It could take a while...";
+            var Header = this.Text = ConstantValuesForm.PlotFormHeaderTextChanged;
             var ComparisonPlot = this.comparisonPlot;
 
             ProgressBar.Visible = true;
@@ -105,7 +96,7 @@ namespace SigncryptionProposed.Forms
             foreach (string s in filesList)
             {
                 string message = File.ReadAllText(s);
-                for (int i = 0; i <= LoopCount; i++)
+                for (int i = 0; i <= ConstantValuesForm.LoopCount; i++)
                 {
                     do
                     {
@@ -131,7 +122,8 @@ namespace SigncryptionProposed.Forms
 
                         try
                         {
-                            errorStatusSDSS1 = ExecuteSigncryptionSDSS1(message);                        }
+                            errorStatusSDSS1 = ExecuteSigncryptionSDSS1(message);                        
+                        }
                         catch
                         {
                             errorStatusSDSS1 = false;
@@ -175,7 +167,7 @@ namespace SigncryptionProposed.Forms
             resultList.Add(timeDiffSdss1);
             resultList.Add(timeDiffSdss2);
 
-            this.Text = "Signcryption Proposed - Comparison with Sdss1 and Sdss2";
+            this.Text = ConstantValuesForm.PlotFormHeaderText;
             ProgressBar.Value = 1;
             ProgressBar.Visible = false;
 
@@ -193,11 +185,11 @@ namespace SigncryptionProposed.Forms
 
             double[] FileSizes = new double[] {5, 32, 105, 147, 313, 411, 606, 811, 928, 1055, 10394 };
 
-            var sp1 = this.comparisonPlot.Plot.AddScatter(signcryptionProposedArray, FileSizes, label: "Proposed");
+            var sp1 = this.comparisonPlot.Plot.AddScatter(signcryptionProposedArray, FileSizes, label: ConstantValuesForm.labelProposedText);
             sp1.MarkerShape = ScottPlot.MarkerShape.openCircle;
-            var sp2 = this.comparisonPlot.Plot.AddScatter(sdss1Array, FileSizes, label: "SDSS1");
+            var sp2 = this.comparisonPlot.Plot.AddScatter(sdss1Array, FileSizes, label: ConstantValuesForm.labelSdss1Text);
             sp2.MarkerShape = ScottPlot.MarkerShape.filledSquare;
-            var sp3 = this.comparisonPlot.Plot.AddScatter(sdss2Array, FileSizes, label: "SDSS2");
+            var sp3 = this.comparisonPlot.Plot.AddScatter(sdss2Array, FileSizes, label: ConstantValuesForm.labelSdss2Text);
             sp3.MarkerShape = ScottPlot.MarkerShape.filledDiamond;
             var legend = comparisonPlot.Plot.Legend();
             comparisonPlot.Refresh();
@@ -207,9 +199,8 @@ namespace SigncryptionProposed.Forms
         private void barGraphButton_Click(object sender, EventArgs e)
         {
             List<List<double>> TimeListArray = ExecuteSigncryption();
-            string[] groupNames = { "5kb", "32kb", "105kb", "147kb", "313kb", "411kb", "606kb", "811kb",
-                "928kb", "1055kb", "10394kb"};
-            string[] seriesNames = { "Proposed", "SDSS1", "SDSS2" };
+            
+            string[] seriesNames = { ConstantValuesForm.labelProposedText, ConstantValuesForm.labelSdss1Text, ConstantValuesForm.labelSdss2Text };
 
             double[] signcryptionProposedArray = TimeListArray[0].ToArray();
             double[] sdss1Array = TimeListArray[1].ToArray();
@@ -220,7 +211,7 @@ namespace SigncryptionProposed.Forms
             double[][] valuesBySeries = { signcryptionProposedArray, sdss1Array, sdss2Array };
             double[][] errorsBySeries = { errorSeries, errorSeries, errorSeries };
 
-            comparisonPlot.Plot.AddBarGroups(groupNames, seriesNames, valuesBySeries, errorsBySeries);
+            comparisonPlot.Plot.AddBarGroups(ConstantValuesForm.groupNamesForBarGraph, seriesNames, valuesBySeries, errorsBySeries);
             comparisonPlot.Plot.Legend(location: Alignment.UpperRight);
             
             comparisonPlot.Plot.SetAxisLimits(yMin: 0);

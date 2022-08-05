@@ -32,10 +32,32 @@ namespace SigncryptionProposed
 
         private void btnShowInformation_Click(object sender, EventArgs e)
         {
-            PlotForm plotForm = new PlotForm();
-            plotForm.Show(this);
-            this.Hide();
+            DialogResult result = MessageBox.Show(ConstantValuesForm.InfoMessageText, ConstantValuesForm.InfoMessageHeader, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            
+            if(result == DialogResult.OK)
+            {
+                PlotFormProposed plotForm = new PlotFormProposed();
+                plotForm.Show(this);
+                this.Hide();
+            }
+            
         }
 
+        private void executionTimeButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(ConstantValuesForm.InfoMessageText, ConstantValuesForm.InfoMessageHeader, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+            if(result == DialogResult.OK)
+            {
+                PlotFormExecution plotFormExecution = new PlotFormExecution();
+                plotFormExecution.Show(this);
+                this.Hide();
+            }
+
+        }
+
+        private void loopCount_ValueChanged(object sender, EventArgs e)
+        {
+            ConstantValuesForm.LoopCount = (int)this.loopCount.Value;
+        }
     }
 }
