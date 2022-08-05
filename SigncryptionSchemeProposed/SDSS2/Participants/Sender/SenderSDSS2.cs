@@ -22,16 +22,14 @@ namespace SigncryptionScheme.SDSS2.Participants.Sender
         {
             bool isErrorOccured = false;
             Dictionary<string, byte[]> signcryptValues = new Dictionary<string, byte[]>();
-
-            /*do
+            do
             {
                 if(isErrorOccured)
                     RandomNumberX = this.GenerateRandomNumberX();
                 
-
-            } while (isErrorOccured);*/
-
             signcryptValues = this.SigncryptTheMessage(message, _PublicKeyReceiver, this.RandomNumberX, GetPrivateKey(), out isErrorOccured);
+            } while (isErrorOccured);
+
             return signcryptValues;
         }
 

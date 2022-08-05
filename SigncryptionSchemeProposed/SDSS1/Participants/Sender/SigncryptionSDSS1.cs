@@ -9,7 +9,7 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
 {
     public class SigncryptionSDSS1 : AbstractSigncryptionSDSS1
     {
-        private readonly GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
+        private readonly GlobalParametersSDSS1 globalParametersSdss1 = GlobalParametersSDSS1.Instance();
 
         public SigncryptionSDSS1()
         {
@@ -28,6 +28,8 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
             byte[] ComputedValueC;
 
             byte[] hashedK1, hashedK2, masterHash;
+           
+
             try
             {
                 masterHash = ComputeMasterKey(_RandomNumberX, _PublicKeyReceiver);
@@ -40,7 +42,8 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
                 ComputedValueC = EncryptMessageWithKey1(message, hashedK1);
                 ComputedValueR = SignMessageWithKey2(message, hashedK2);
 
-                BigInteger valueR = ComputeR(ComputedValueR, gb.RandomNumberQ);
+                BigInteger valueR = ComputeR(ComputedValueR, globalParametersSdss1.RandomNumberQ);
+                //BigInteger valueR = ComputeR(ComputedValueR, globalParametersSdss1.RandomNumberP);
 
                 //BigInteger valuedRBigInt = BigInteger.Abs(new BigInteger(ComputedValueR[1]));
 
@@ -64,20 +67,22 @@ namespace SigncryptionScheme.SDSS1.Participants.Sender
 
         private byte[] ComputeMasterKey(BigInteger _RandomNumberX, BigInteger _PublicKeyReceiver)
         {
-            BigInteger hashKey = BigInteger.ModPow(_PublicKeyReceiver, _RandomNumberX, gb.RandomNumberP);
+            BigInteger hashKey = BigInteger.ModPow(_PublicKeyReceiver, _RandomNumberX, globalParametersSdss1.RandomNumberP);
             return Computation.HashBigIntegerToBytes_SHA1(hashKey);
         }
 
         private BigInteger ComputeS(BigInteger _RandomValueX, BigInteger _ValueR, BigInteger _SenderSecretKey)
         {
-            List<BigInteger> tempList = gb.ListContainingAllQValues.FindAll(x => BigInteger.Multiply(x, (_ValueR + _SenderSecretKey)) % gb.RandomNumberQ == 1);
-            BigInteger tempValue0 = BigInteger.Multiply(_RandomValueX, tempList[0]) % gb.RandomNumberQ;
+            BigInteger tempvalue = (_ValueR + _SenderSecretKey) % globalParametersSdss1.RandomNumberQ;
+            List<BigInteger> tempList = globalParametersSdss1.ListContainingAllQValues.FindAll(x => BigInteger.Multiply(x, tempvalue) % globalParametersSdss1.RandomNumberQ == 1);
+            BigInteger tempValue0 = BigInteger.Multiply(_RandomValueX, tempList[0]) % globalParametersSdss1.RandomNumberQ;
+            
             return tempValue0;
         }
 
         private byte[] EncryptMessageWithKey1(string _message, byte[] _keyK1)
         {
-            return Computation.EncryptStringToBytes_Aes(_message, _keyK1, gb.RijndaelCryptoSystem.IV);
+            return Computation.EncryptStringToBytes_Aes(_message, _keyK1, globalParametersSdss1.RijndaelCryptoSystem.IV);
         }
 
     }

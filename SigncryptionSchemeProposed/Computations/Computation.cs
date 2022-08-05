@@ -127,7 +127,7 @@ namespace SigncryptionScheme
 
                 }
             }
-            catch 
+            catch(Exception e) 
             {
                 plaintext = "";
             }

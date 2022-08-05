@@ -8,9 +8,12 @@ using SigncryptionScheme.SDSS1.Participants.Sender;
 using SigncryptionScheme.SDSS2.Participants.Receiver;
 using SigncryptionScheme.SDSS2.Participants.Sender;
 using System.IO;
+using System.Linq;
+
 
 namespace ProposedSigncryption
 {
+
     class ProposedSigncryption
     {
         public static void Main(string[] args)
@@ -19,13 +22,46 @@ namespace ProposedSigncryption
             //string message = "Hello World I am the king of encryption";
             string projectDirectory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName+@"\Datasets";
             string[] filesList = Directory.GetFiles(projectDirectory);
-            
-            foreach(string s in filesList)
+
+            /*
+            foreach (string s in filesList)
+            {
+                ExecuteSigncryptionSDSS1(message);
+                ExecuteSigncryptionSDSS2(message);
+            }
+            */
+
+
+            foreach (string s in filesList)
             {
                 string messageEncryptable = File.ReadAllText(s);
                 Console.WriteLine("File: {0}", s.Replace(projectDirectory, ""));
                 ExecuteSigncryption(messageEncryptable);
             }
+
+        }
+
+        private static void ExecuteSigncryptionSDSS1(string message)
+        {
+
+            ReceiverSDSS1 BobSDSS1 = new ReceiverSDSS1();
+            SenderSDSS1 AliceSDSS1 = new SenderSDSS1();
+
+            Dictionary<string, byte[]> signcryptValuesSDSS1 = AliceSDSS1.MessageSigncryption(message, BobSDSS1.GetPublicKey());
+            bool errorStatusSDSS1 = BobSDSS1.MessageUnsigncryption(signcryptValuesSDSS1, AliceSDSS1.GetPublicKey(), out string _message);
+            //Console.WriteLine("SDSS1: Is message the same?: {0} \nmessage: {1}", errorStatusSDSS1, _message);
+            Console.WriteLine("SDSS1: Is message the same?: {0}", errorStatusSDSS1);
+        }
+
+        private static void ExecuteSigncryptionSDSS2(string message)
+        {
+
+            ReceiverSDSS1 BobSDSS2 = new ReceiverSDSS1();
+            SenderSDSS1 AliceSDSS2 = new SenderSDSS1();
+
+            Dictionary<string, byte[]> signcryptValuesSDSS2 = AliceSDSS2.MessageSigncryption(message, BobSDSS2.GetPublicKey());
+            bool errorStatusSDSS1 = BobSDSS2.MessageUnsigncryption(signcryptValuesSDSS2, AliceSDSS2.GetPublicKey(), out string _message);
+            Console.WriteLine("SDSS2: Is message the same?: {0}", errorStatusSDSS1);
         }
 
         private static void ExecuteSigncryption(string message)
@@ -104,14 +140,19 @@ namespace ProposedSigncryption
                 timeDifference = Computation.GetTimeStamp() - timeDifference;
                 timeDifferencelist2.Add(timeDifference);
             }
-
+            
+            long totalProp = timeDifferencelistProp.Sum() / timeDifferencelistProp.Count;
+            long totalSdss1 = timeDifferencelist1.Sum() / timeDifferencelistProp.Count;
+            long totalSdss2 = timeDifferencelist2.Sum() / timeDifferencelistProp.Count;
+            /**
             timeDifferencelist2.Sort();
             timeDifferencelist1.Sort();
             timeDifferencelistProp.Sort();
+            */
 
-            Console.WriteLine("Time difference for Signcryption Proposed: {0}", timeDifferencelistProp[0]);
-            Console.WriteLine("Time difference for SDSS1: {0}", timeDifferencelist1[0]);
-            Console.WriteLine("Time difference for SDSS2: {0}", timeDifferencelist2[0]);
+            Console.WriteLine("Time difference for Signcryption Proposed: {0}", totalProp);
+            Console.WriteLine("Time difference for SDSS1: {0}", totalSdss1);
+            Console.WriteLine("Time difference for SDSS2: {0}", totalSdss2);
         }
     }
 }

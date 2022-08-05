@@ -9,7 +9,7 @@ namespace SigncryptionScheme.SDSS1.Participants.Receiver
 {
     public class UnsigncryptionSDSS1 : AbstractSigncryptionSDSS1
     {
-        GlobalParametersSDSS1 gb = GlobalParametersSDSS1.Instance();
+        GlobalParametersSDSS1 globalParametersSdss1 = GlobalParametersSDSS1.Instance();
 
         public UnsigncryptionSDSS1()
         {
@@ -33,7 +33,6 @@ namespace SigncryptionScheme.SDSS1.Participants.Receiver
 
 
             ObtainedMasterKey = this.ObtainMasterKey(valueR, valueS, _PrivateKeyOfReceiver, _PublicKeyOfSender);
-
             
             masterHash = HashTheValueComputed(ObtainedMasterKey);
             //masterHash = _signcryptValues[ConstantValuesSigncryptionSDSS2.Key];
@@ -45,8 +44,6 @@ namespace SigncryptionScheme.SDSS1.Participants.Receiver
 
             obtainedMessage = DecryptMessageWithKey1(valueC, hashedK1);
             valuePrimeR = SignMessageWithKey2(obtainedMessage, hashedK2);
-            obtainedMessageOut = obtainedMessage;
-
             bool isVerified = this.VerifyTheMessage(valueR, valuePrimeR);
 
             if (isVerified)
@@ -60,20 +57,17 @@ namespace SigncryptionScheme.SDSS1.Participants.Receiver
         private BigInteger ObtainMasterKey(byte [] _ValueR, byte[] _ValueS, BigInteger _PrivateKey, BigInteger _PublicKeyOfSender)
         {
             BigInteger valueS = new BigInteger(_ValueS);
-            BigInteger valueR = ComputeR(_ValueR, gb.RandomNumberQ);
+            BigInteger valueR = ComputeR(_ValueR, globalParametersSdss1.RandomNumberQ);
 
             BigInteger tempValue0 = BigInteger.Multiply(valueS, _PrivateKey);
-
-            BigInteger tempValue1 = BigInteger.ModPow(gb.RandomNumberG, BigInteger.Multiply(tempValue0, valueR), gb.RandomNumberP);
-
-            BigInteger tempValue2 = BigInteger.ModPow(_PublicKeyOfSender, tempValue0, gb.RandomNumberP);
-
-            return BigInteger.Multiply(tempValue1, tempValue2) % gb.RandomNumberP;
+            BigInteger tempValue1 = BigInteger.ModPow(globalParametersSdss1.RandomNumberG, BigInteger.Multiply(tempValue0, valueR), globalParametersSdss1.RandomNumberP);
+            BigInteger tempValue2 = BigInteger.ModPow(_PublicKeyOfSender, tempValue0, globalParametersSdss1.RandomNumberP);
+            return BigInteger.Multiply(tempValue1, tempValue2) % globalParametersSdss1.RandomNumberP;
         }
 
         private string DecryptMessageWithKey1(byte[] _cipherText, byte[] _keyK1)
         {
-            return Computation.DecryptStringFromBytes_Aes(_cipherText, _keyK1, gb.RijndaelCryptoSystem.IV);
+            return Computation.DecryptStringFromBytes_Aes(_cipherText, _keyK1, globalParametersSdss1.RijndaelCryptoSystem.IV);
         }
 
         private byte[] HashTheValueComputed(BigInteger _value)

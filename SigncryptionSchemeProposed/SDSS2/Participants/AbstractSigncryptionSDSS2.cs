@@ -22,7 +22,7 @@ namespace SigncryptionScheme.SDSS2.Participants
                 isUnsigned: true,
                 isBigEndian: true);
 
-            return valueR % (_RandomNumberQ - 1);
+            return valueR % (_RandomNumberQ);
         }
     }
 }
