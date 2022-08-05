@@ -49,11 +49,16 @@ namespace SigncryptionProposed.Forms
         public static string senderPublicKey = "Sender PK:";
         public static string receiverPublicKey = "Receiver PK:";
 
+        /// <summary>
+        /// Common Values
+        /// </summary>
         public static string[] groupNamesForBarGraph = { "5kb", "32kb", "105kb", "147kb", "313kb", "411kb", "606kb", "811kb",
                 "928kb", "1055kb", "10394kb"};
-
         public static int LoopCount = 2;
 
+        /// <summary>
+        /// Message Box Common Strings
+        /// </summary>
         public static string InfoMessageText = "This program signcrypts and then unsigncrypts all txt files in the Datasets folder. Also, " +
             "do not forget to arrange loop cpunt as processing it could take time.";
         public static string InfoMessageHeader = "Information";
