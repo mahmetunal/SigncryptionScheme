@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigncryptionScheme", "SigncryptionSchemeProposed\SigncryptionScheme.csproj", "{269BCA23-ADC1-4A4D-B198-06BE3F6A4608}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SigncryptionProposed", "SigncryptionWindowsFormUI\SigncryptionProposed.csproj", "{B1CEE20A-A19B-4092-8DEE-20F09AC53881}"
+	ProjectSection(ProjectDependencies) = postProject
+		{269BCA23-ADC1-4A4D-B198-06BE3F6A4608} = {269BCA23-ADC1-4A4D-B198-06BE3F6A4608}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

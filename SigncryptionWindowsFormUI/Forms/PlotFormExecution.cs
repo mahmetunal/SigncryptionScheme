@@ -1,14 +1,11 @@
 ﻿using ScottPlot;
-using SigncryptionProposed.Signcryption.Participants.Receiver;
-using SigncryptionProposed.Signcryption.Participants.Sender;
+using SigncryptionScheme;
+using SigncryptionScheme.Signcryption.Participants.Receiver;
+using SigncryptionScheme.Signcryption.Participants.Sender;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace SigncryptionProposed.Forms
