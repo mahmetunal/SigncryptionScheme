@@ -73,36 +73,24 @@ namespace SigncryptionProposed.Forms
                 {
 
                     bool errorStatus = false;
-                    //do
-                    //{
-                        timeDifferenceFull = Computation.GetTimeStamp();
-                        //try
-                        //{
-                            Receiver Bob = new Receiver();
-                            Sender Alice = new Sender();
 
-                            timeDifferenceSign = Computation.GetTimeStamp();
+                    timeDifferenceFull = Computation.GetTimeStamp();
+                    Receiver Bob = new Receiver();
+                    Sender Alice = new Sender();
+                    timeDifferenceSign = Computation.GetTimeStamp();
 
-                            Dictionary<string, byte[]> signcryptValues = Alice.MessageSigncryption(message, Bob.GetPublicKey());
-                            timeDifferenceSign = Computation.GetTimeStamp() - timeDifferenceSign;
+                    Dictionary<string, byte[]> signcryptValues = Alice.MessageSigncryption(message, Bob.GetPublicKey());
+                    timeDifferenceSign = Computation.GetTimeStamp() - timeDifferenceSign;
 
-                            timeDifferenceUnsign = Computation.GetTimeStamp();
-                            errorStatus = Bob.MessageUnsigncryption(signcryptValues, out string _message);
-                            timeDifferenceUnsign = Computation.GetTimeStamp() - timeDifferenceUnsign;
-                        //}
-                        //catch
-                        //{
-                          //  errorStatus = false;
-                       // }
-
-                    //} while (!errorStatus);
+                    timeDifferenceUnsign = Computation.GetTimeStamp();
+                    errorStatus = Bob.MessageUnsigncryption(signcryptValues, out string _message);
+                    timeDifferenceUnsign = Computation.GetTimeStamp() - timeDifferenceUnsign;
 
                     timeDifferenceFull = Computation.GetTimeStamp() - timeDifferenceFull;
 
                     timeDifferencelistPropFullExec.Add(timeDifferenceFull);
                     timeDifferencelistSigncryption.Add(timeDifferenceSign);
                     timeDifferencelistUnsigncryption.Add(timeDifferenceUnsign);
-
                 }
 
                 long totalProp = timeDifferencelistPropFullExec.Sum() / timeDifferencelistPropFullExec.Count;

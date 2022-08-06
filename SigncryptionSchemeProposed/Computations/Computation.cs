@@ -231,7 +231,7 @@ namespace SigncryptionScheme
         #endregion SHA1ComputeHash
 
         /// <summary>
-        /// This method give the timestamp value of the time when it is called.
+        /// This method gives the timestamp value of the time when it is called.
         /// </summary>
         /// <returns>
         /// A long timestamp value.

@@ -200,7 +200,7 @@ namespace SigncryptionScheme.Signcryption
                     primeFactors = primeFactors.FindAll(
                         delegate (BigInteger bg)
                         {
-                            return BIPT.IsProbablePrime(bg, 100) && bg > ConstantValeus.lowerLimitofQ;
+                            return BIPT.IsProbablePrime(bg, 100) && bg > ConstantValeus.lowestLimitofQ;
                         }
                     );
 

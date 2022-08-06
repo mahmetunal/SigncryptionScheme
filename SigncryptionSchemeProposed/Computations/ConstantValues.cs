@@ -25,10 +25,10 @@ namespace SigncryptionScheme.Computations
         public static BigInteger endPoint = new BigInteger(Math.Pow(2, 9));
 
         /// <summary>
-        /// Instance variable <c>lowerLimitofQ</c> represents minimum value
+        /// Instance variable <c>lowestLimitofQ</c> represents minimum value
         /// of Random Number Q. In this case, it could not be less than 10.
         /// </summary>
-        public static BigInteger lowerLimitofQ = new BigInteger(10);
+        public static BigInteger lowestLimitofQ = new BigInteger(10);
         #endregion
     }
 }
